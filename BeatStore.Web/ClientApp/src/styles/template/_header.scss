@@ -1,0 +1,183 @@
+#MainHeader {
+    position: relative;
+    display: block;
+    width: 100%;
+
+    &::after {
+        z-index: -1;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        width: 100%;
+        content: '';
+        background-image: url('../../../public/images/header.jpg');
+        background-attachment: fixed;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position-y: -23vw;
+        -webkit-mask-image: linear-gradient(to top, transparent 5%, $backgroundColor 95%);
+        mask-image: linear-gradient(to top, transparent 5%, $backgroundColor 95%);
+        height: 23vw;
+        min-height: 136px;
+
+        @include desktop {
+            background-image: url('../../../public/images/header_wide.jpg');
+            background-position-y: -150px;
+            height: 15vw;
+            max-height: 280px;
+        }
+    }
+
+    > .content {
+        padding: 20px 20px;
+        display: block;
+        text-align: center;
+        width: 100%;
+        z-index: 2;
+
+        @include full-display {
+            line-height: 100px;
+        }
+
+
+        .socialBar {
+            margin-top: 40px;
+            height: 80px;
+
+            @include desktop {
+                margin-top: 15px;
+            }
+
+            .socialButton {
+
+                &__content {
+                    display: block;
+                    padding: 10px 0;
+                    color: rgb(255,255,255);
+                    opacity: 0.7;
+                    text-decoration: none;
+                    border: 1px solid rgb(255,255,255);
+                    border-radius: 5px;
+                    transition: $defaultTransition;
+                    overflow: hidden;
+                    line-height: initial;
+                    height: 3em;
+
+                    @include desktop {
+                        height: 3.5em;
+                    }
+
+                    .icon {
+                        display: block;
+                        margin: 0 auto;
+                        font-size: 1.5em;
+
+                        @include desktop {
+                            font-size: 2em;
+                        }
+                    }
+
+                    .name {
+                        display: block;
+                        opacity: 0;
+                        padding: 8px 0;
+                        transition: $defaultTransition;
+                    }
+
+                    &:hover {
+                        height: 5em;
+                        opacity: 1;
+
+                        .name {
+                            opacity: 1;
+                            height: 25px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.shoppingCartButton {
+    font-size: 1.5em;
+    cursor: pointer;
+    -webkit-filter: drop-shadow( 0 0 2px rgb(0, 0, 0));
+    filter: drop-shadow( 0 0 2px rgb(0, 0, 0));
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    color: $mainFontColor;
+    padding: 8px 15px;
+    border-radius: 15px;
+
+    @include full-display {
+        right: 50px;
+        top: 30px;
+    }
+
+    &:hover {
+        background: rgba(255,255,255, 0.1);
+    }
+
+    &__quantity {
+        padding: 0 0 0 10px;
+    }
+}
+
+#MainLogo {
+    display: block;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 10px;
+    font-family: $gtaFont;
+    color: white;
+    text-decoration: none;
+    text-shadow: 1px 1px 5px black;
+    font-size: 2em;
+
+    @include desktop {
+        font-size: 2.5em;
+        left: 6vw;
+        top: 50%;
+        transform: translateY(calc(-50% - 20px));
+    }
+
+    @include full-display {
+        font-size: 3em;
+        left: 6vw;
+        top: 50%;
+        transform: translateY(calc(-50% - 20px));
+    }
+
+    h1 {
+        font-size: 1em;
+    }
+}
+
+#MenuBar {
+    width: 100%;
+    text-align: right;
+
+    @include desktop {
+        text-align: center;
+    }
+
+    .hamburgerButton {
+        font-size: 2.5em;
+        cursor: pointer;
+        -webkit-filter: drop-shadow( 0 0 2px rgb(0, 0, 0));
+        filter: drop-shadow( 0 0 2px rgb(0, 0, 0));
+        position: absolute;
+        left: 20px;
+        top: 10px;
+
+        @include desktop {
+            display: none;
+        }
+    }
+
+    @import '../components/_menu';
+}

@@ -1,0 +1,51 @@
+.articleWithPicture
+{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  &__header
+  {
+    padding: 0 10px;
+    h1
+    {
+      line-height: 1;
+      color: rgb(0, 0, 0);
+      font-size: 2em;
+      text-transform: uppercase;
+    }
+    strong
+    {
+      font-weight: normal;
+      color: $themeColor;
+    }
+  }
+  &__underline
+  {
+    margin: 10px 0;
+    color: rgba(0, 0, 0, 0.8);
+  }
+  &__image
+  {
+    padding: 0  25px 25px;
+    width: 100%;
+    filter: drop-shadow(0 0 0.3rem rgba(50,50,50, 0.5));
+    @include tablet
+    {
+      padding: 0;
+    }
+  }
+  &__content
+  {
+    padding: 10px 25px;
+    text-align: justify;
+    @include tablet
+    {
+      padding: 10px 0;
+    }
+
+    .smallSubtitle
+    {
+      font-size: 1.2em;
+      color: rgb(0, 0, 0);
+    }
+  }
+}

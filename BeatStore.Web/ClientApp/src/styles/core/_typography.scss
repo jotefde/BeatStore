@@ -1,0 +1,14 @@
+
+@mixin google-font($family) {
+  @import url("https://fonts.googleapis.com/css2?family=#{$family}");
+}
+
+@import url("https://fonts.googleapis.com/css?family=Work+Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&subset=latin,latin-ext,cyrillic-ext,greek,greek-ext,cyrillic&display=swap");
+
+@font-face {
+    font-family: 'Pricedow';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url("../../../public/fonts/pricedow.ttf") format('truetype');
+}

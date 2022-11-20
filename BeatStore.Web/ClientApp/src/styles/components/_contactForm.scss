@@ -1,0 +1,33 @@
+.contactFormWrapper {
+    background: $themeColor;
+    color: $mainFontColor;
+    padding: 30px;
+    box-shadow: $floatingBoxShadow;
+    border: 3px solid $darkenThemeColor;
+
+    &__header {
+        text-align: center;
+        font-size: 1.3em;
+        font-weight: 100;
+        padding: 20px 0;
+
+        h3 {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+    }
+
+    &__content {
+        .primaryButton {
+            margin-top: 25px;
+        }
+    }
+
+    .contactFormInput {
+        margin-bottom: 35px;
+
+        .form-label {
+            margin-bottom: 10px;
+        }
+    }
+}

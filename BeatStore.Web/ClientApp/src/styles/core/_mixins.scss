@@ -1,0 +1,59 @@
+@mixin tablet {
+  @media (min-width: #{$tablet-width}){
+    @content;
+  }
+}
+
+@mixin tablet-landscape{
+  @media (min-width: #{$tabletLandscape-width}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$laptop-width}) {
+    @content;
+  }
+}
+
+@mixin full-display {
+  @media (min-width: #{$full-width}) {
+    @content;
+  }
+}
+
+@mixin Scrollable($scrollbar: true) {
+    -ms-overflow-style: auto; /* for Internet Explorer, Edge */
+    scrollbar-width: 10px; /* for Firefox */
+    overflow: hidden;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+    /* Track */
+    &::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey;
+        border-radius: 10px;
+    }
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        background: darken($lightenThemeColor, 20%);
+        border-radius: 10px;
+    }
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: $lightenThemeColor;
+    }
+}
+
+@mixin PageHeader($color: $lightenThemeColor)
+{
+  > h1
+  {
+    font-size: 2.5em;
+    text-align: center;
+    padding-top: 40px;
+    color: $color;
+  }
+}

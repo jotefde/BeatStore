@@ -1,0 +1,73 @@
+#AboutUs
+{
+  @include PageHeader();
+  .articleSection__header
+  {
+    > h2 > span {
+        color: $lightenThemeColor;
+      }
+    > img
+    {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+#AboutUsArticle1
+{
+  .articleSection__content
+  {
+    text-align: center;
+    img
+    {
+      width: 80vw;
+      max-width: 800px;
+    }
+  }
+}
+
+#AboutUsArticle2
+{
+  .articleSection__content
+  {
+    ul
+    {
+      list-style-type: disc;
+      li
+      {
+        padding: 5px 0;
+      }
+    }
+  }
+}
+
+#AboutUsArticle4, #AboutUsArticle5
+{
+  .articleWithPicture__header
+  {
+    text-align: center;
+    h2
+    {
+      text-align: left;
+    }
+  }
+}
+
+#AboutUsArticle6, #AboutUsArticle7, #AboutUsArticle8, #AboutUsArticle9
+{
+  padding-bottom: 0;
+  .articleSection__header
+  {
+    h2
+    {
+      font-size: 1.2em;
+      font-weight: 500;
+    }
+  }
+}
+
+#AboutUsToOffer
+{
+  display: block;
+  margin: 15px auto 50px;
+}

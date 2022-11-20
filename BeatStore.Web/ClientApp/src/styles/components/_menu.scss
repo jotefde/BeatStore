@@ -1,0 +1,8 @@
+
+@media (max-width: #{$laptop-width - 1}) {
+    @import "menu/_mainMenu--mobile";
+}
+
+@include desktop {
+    @import "menu/_mainMenu--desktop";
+}

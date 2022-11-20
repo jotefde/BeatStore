@@ -1,0 +1,22 @@
+// Fonts
+$mainFont: 'Work Sans';
+$mainFontColor: rgb(220, 220, 220);
+$gtaFont: 'Pricedow';
+
+// colors
+$themeColor: rgb(49, 29, 63);
+$lightenThemeColor: lighten($themeColor, 40%);
+$darkenThemeColor: darken($themeColor, 10%);
+$secondColor: rgb(226, 63, 87);
+$grayColor: rgb(125, 125, 125);
+$backgroundColor: rgb(10, 10, 10);
+//transitions
+$defaultTransition: all 0.3s ease;
+
+//shadows
+$floatingBoxShadow: 0 0 50px -15px rgba(#444, 1);
+
+$tablet-width: 576px;
+$tabletLandscape-width: 768px;
+$laptop-width: 992px;
+$full-width: 1200px;

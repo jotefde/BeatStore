@@ -1,0 +1,94 @@
+
+@mixin subMenu--Desktop {
+    position: absolute;
+    left: 50%;
+    overflow: hidden;
+    height: 0;
+    width: 100vw;
+    max-width: 1100px;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background: white;
+    box-shadow: $floatingBoxShadow;
+    transition: $defaultTransition;
+
+    .subItem {
+        flex: 1 0 21%;
+        display: inline-block;
+        vertical-align: top;
+
+        &__thumb {
+            display: block;
+            margin: 0 auto;
+            width: 100px;
+        }
+
+        &__link {
+            display: block;
+            color: $themeColor;
+            line-height: initial;
+            padding: 20px 0 0;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: $defaultTransition;
+
+            &:hover {
+                border-radius: 15px;
+                background: rgba($lightenThemeColor, 0.2);
+                box-shadow: 0 0 15px 10px rgba($lightenThemeColor, 0.15);
+            }
+        }
+
+        &__text {
+            font-size: 1.3em;
+            font-weight: 500;
+            line-height: 2em;
+        }
+    }
+}
+
+
+.mainMenuWrap {
+    &__closeButton {
+        @include desktop {
+            display: none;
+        }
+    }
+
+    .subMenu {
+        @include subMenu--Desktop;
+    }
+
+    .menuItem {
+        display: inline-block;
+        transition: $defaultTransition;
+
+        &__link {
+            font-family: $mainFont;
+            text-transform: uppercase;
+            text-decoration: none;
+            text-shadow: 1px 1px 5px black;
+            color: white;
+            padding: 15px;
+            font-size: 1.2em;
+            font-weight: normal;
+            display: block;
+            height: 100%;
+            transition: $defaultTransition;
+        }
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        &--hasChildren:hover {
+            .subMenu {
+                height: 475px;
+                z-index: 600;
+                border-bottom: 1px solid $themeColor;
+            }
+        }
+    }
+}

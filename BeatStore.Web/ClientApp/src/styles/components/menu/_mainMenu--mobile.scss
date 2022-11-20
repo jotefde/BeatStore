@@ -1,0 +1,114 @@
+
+@mixin subMenu--Mobile
+{
+  display: block;
+  overflow: hidden;
+  height: 0;
+
+  &--active
+  {
+    overflow: visible;
+    height: auto;
+  }
+
+  .subItem
+  {
+    &__thumb
+    {
+      display: none;
+    }
+    &__link
+    {
+      display: block;
+      text-transform: uppercase;
+      padding-left: 15px;
+      text-decoration: none;
+      line-height: 50px;
+      width: 100%;
+      color: $themeColor;
+      font-size: 1.3em;
+      font-weight: bold;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: $themeColor;
+        color: white;
+      }
+    }
+  }
+}
+
+
+.mainMenuWrap
+{
+  display: block;
+  position: fixed;
+  right: -100vw;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgb(255, 255, 255);
+  z-index: 999;
+  transition: $defaultTransition;
+  &__closeButton
+  {
+    font-size: 3em;
+    text-align: right;
+    font-family: 'FontAwesome';
+    margin-right: 20px;
+    cursor: pointer;
+  }
+  &--active
+  {
+    right: 0;
+  }
+}
+
+.mainMenu
+{
+  line-height: normal;
+  text-align: center;
+  height: calc(100vh - 85px);
+  @include Scrollable();
+
+  .hamburgerButton
+  {
+    color: rgb(255, 255, 255);
+  }
+  .menuItem
+  {
+    position: relative;
+    width: 100%;
+    display: block;
+    &--hasChildren
+    {
+      .subMenu
+      {
+        @include subMenu--Mobile;
+      }
+    }
+    &__link
+    {
+      display: block;
+      text-transform: uppercase;
+      text-decoration: none;
+      line-height: 50px;
+      width: 100%;
+      color: $themeColor;
+      font-size: 1.3em;
+      font-weight: bold;
+      transition: $defaultTransition;
+      &:hover
+      {
+        background: $themeColor;
+        color: white;
+      }
+    }
+    &__icon
+    {
+      display: inline-block;
+      height: 50px;
+      padding: 0 15px 0 5%;
+    }
+  }
+}

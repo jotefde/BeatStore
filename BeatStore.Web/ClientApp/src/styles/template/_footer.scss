@@ -1,0 +1,70 @@
+
+
+#FooterContent {
+    color: $secondColor;
+    text-align: left;
+    padding-top: 60px;
+
+    @include tablet {
+        padding: 60px 0 20px;
+    }
+
+    .footerNav {
+        ol {
+            padding-left: 0;
+        }
+
+        &__item {
+            font-size: 1.2em;
+
+            a {
+                color: $mainFontColor;
+            }
+        }
+    }
+
+    .footerInfo {
+        margin-top: 20px;
+        text-align: right;
+
+        @include tablet {
+            margin: 0;
+        }
+
+        h3 {
+            font-size: 1.4em;
+        }
+
+        span {
+            font-size: 1em;
+            color: $mainFontColor;
+            padding: 3px 0;
+            display: block;
+
+            a {
+                color: $lightenThemeColor;
+                text-decoration: none;
+            }
+        }
+    }
+
+    .footerContact {
+        margin-top: 20px;
+
+        @include tablet {
+            margin: 0;
+        }
+
+        &__title {
+            font-size: 1.4em;
+        }
+
+        &__mail, &__tel {
+            font-size: 1em;
+            color: $mainFontColor;
+            padding: 3px 0;
+            display: block;
+            text-decoration: none;
+        }
+    }
+}

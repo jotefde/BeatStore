@@ -1,0 +1,70 @@
+// core
+@import 'core/_reset';
+//@import '../../node_modules/bootstrap/scss/bootstrap';
+@import 'core/_variables';
+@import 'core/_typography';
+@import 'core/_mixins';
+
+html {
+    box-sizing: border-box;
+    font-family: $mainFont;
+    color: $mainFontColor;
+    font-weight: normal;
+    font-size: 1em;
+    scroll-behavior: initial !important;
+    letter-spacing: 0.05em;
+    background: $backgroundColor;
+}
+
+body {
+    background: none;
+    &.noscroll {
+        overflow: hidden;
+    }
+}
+
+#root {
+    min-height: 100vh;
+    margin: 0;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+.pageContent {
+    @include full-display {
+        margin-top: 10px;
+    }
+}
+
+#ScrollUpButton {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 2.5em;
+    color: $secondColor;
+    cursor: pointer;
+    //background: rgb(255, 255, 255);
+    border-radius: 5px;
+    font-weight: 100;
+}
+
+//animations
+@import "animations/_A-markArticle";
+
+//components
+@import "_components";
+@import "template/_header";
+@import "template/_footer";
+
+//views
+@import "views/_home";
+@import "views/_aboutUs";
+@import "views/_diet";
+@import "views/_allCategories";
+@import "views/_category";
+@import "views/_product";
+@import "views/_advices";
+@import "views/_adviceDetails";
+@import "views/_contact";
+@import "views/_search";
+@import "views/_notFound";

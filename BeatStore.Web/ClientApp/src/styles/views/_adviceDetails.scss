@@ -1,0 +1,28 @@
+#AdviceDetails
+{
+  .articleSection
+  {
+    padding-bottom: 0;
+    &:last-child
+    {
+      padding-bottom: 40px;
+    }
+  }
+  .topicImage
+  {
+    width: 100%;
+    border-bottom: 2px solid $lightenThemeColor;
+    box-shadow: $floatingBoxShadow;
+    @include tablet-landscape
+    {
+      display: block;
+      width: 80vw;
+      margin: 25px auto 0;
+      border: 2px solid $lightenThemeColor;
+    }
+    @include desktop
+    {
+      max-width: 500px;
+    }
+  }
+}

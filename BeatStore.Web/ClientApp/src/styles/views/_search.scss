@@ -1,0 +1,49 @@
+#Search
+{
+  @include PageHeader();
+  .paginatedGrid .col, .paginatedList .col
+  {
+    text-align: center;
+  }
+  .paginationMenu
+  {
+    margin-bottom: 40px;
+  }
+
+  .productResults, .articleResults
+  {
+    margin: 60px 0;
+    > p
+    {
+      text-align: center;
+      color: $mainFontColor;
+    }
+  }
+
+  .paginatedList
+  {
+    .item
+    {
+      display: block;
+      text-decoration: none;
+      margin: 30px 0 10px;
+      padding: 10px 0 15px 0;
+      position: relative;
+      &::after
+      {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        content: "";
+        width: 80%;
+        height: 1px;
+        border-bottom: 1px solid rgba($lightenThemeColor, 0.2);
+      }
+      &__content
+      {
+        color: $mainFontColor;
+      }
+    }
+  }
+}

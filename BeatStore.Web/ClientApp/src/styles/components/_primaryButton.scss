@@ -1,0 +1,39 @@
+.primaryButton
+{
+  background: $themeColor;
+  color: rgb(255, 255, 255);
+  line-height: 40px;
+  padding: 5px 30px;
+  border: 1px solid $lightenThemeColor;
+  transition: $defaultTransition;
+  &[disabled]
+  {
+    background: desaturate($themeColor, 10);
+    border-color: desaturate($lightenThemeColor, 10);
+  }
+  &:hover
+  {
+    background: $lightenThemeColor;
+    border: 1px solid $lightenThemeColor;
+  }
+}
+
+.negativeButton
+{
+  background: rgb(255, 255, 255);
+  color: $lightenThemeColor;
+  border: 1px solid $lightenThemeColor;
+  transition: $defaultTransition;
+  &[disabled]
+  {
+    background: rgb(230, 230, 230);
+    border-color: desaturate($lightenThemeColor, 30);
+    color: desaturate($lightenThemeColor, 30);
+  }
+  &:hover
+  {
+    background: $lightenThemeColor;
+    border: 1px solid $lightenThemeColor;
+    color: rgb(255, 255, 255);
+  }
+}

@@ -1,0 +1,13 @@
+.contactCard
+{
+  text-align: left;
+  &__header h2
+  {
+    font-size: 1.1em;
+    text-transform: uppercase;
+  }
+  span
+  {
+    display: block;
+  }
+}

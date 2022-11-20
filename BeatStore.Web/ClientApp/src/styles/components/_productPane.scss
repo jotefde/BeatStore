@@ -1,0 +1,30 @@
+.productPane
+{
+  @extend .describedPicturePane;
+  &__image
+  {
+    @extend .describedPicturePane__image;
+    img
+    {
+      width: 50vw;
+      max-width: 265px;
+    }
+  }
+  &__name
+  {
+    @extend .describedPicturePane__title;
+    font-size: 1em;
+    padding: 0;
+    line-height: initial;
+    a
+    {
+      text-decoration: none;
+    }
+  }
+  &__quantity, &__price
+  {
+    display: block;
+    text-align: center;
+  }
+
+}

@@ -1,0 +1,9 @@
+.navLink, .mailLink, .phoneLink
+{
+  color: $lightenThemeColor;
+  transition: $defaultTransition;
+  &:hover
+  {
+    color: lighten($lightenThemeColor, 15%);
+  }
+}

@@ -1,0 +1,39 @@
+#Advices
+{
+  @include PageHeader();
+  h1
+  {
+    padding-bottom: 40px;
+  }
+  .describedPicturePane
+  {
+    @include tablet-landscape
+    {
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba($themeColor, 0.2);
+    }
+    @include full-display
+    {
+      margin: 0;
+      padding-bottom: 40px;
+      border: none;
+    }
+    &__image
+    {
+      img
+      {
+        border: 2px solid $themeColor;
+        @include tablet
+        {
+          width: 80vw;
+          max-width: 420px;
+        }
+      }
+    }
+  }
+  .contactFormWrapper
+  {
+    margin: 50px auto;
+  }
+}

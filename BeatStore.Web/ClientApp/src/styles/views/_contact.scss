@@ -1,0 +1,49 @@
+#Contact {
+    @include PageHeader();
+
+    h1 {
+        @include tablet-landscape {
+            padding: 15px 0 65px;
+        }
+    }
+
+    .contactDetails {
+        text-align: left;
+        padding: 0;
+        font-size: 1.3em;
+        padding-right: 60px;
+
+        @include tablet-landscape {
+            font-size: 1.1em;
+            padding-left: 5px;
+        }
+
+        &__section {
+            background: $darkenThemeColor;
+            margin: 0 0 40px;
+            box-shadow: $floatingBoxShadow;
+
+            @include tablet-landscape {
+                font-size: 1em;
+            }
+
+            h3 {
+                background: $themeColor;
+                padding: 5px 0 5px 10px;
+                color: $mainFontColor;
+                text-transform: uppercase;
+                font-size: 1em;
+            }
+
+            .content {
+                padding: 10px;
+                color: $grayColor;
+
+                a {
+                    display: block;
+                    padding: 8px 0;
+                }
+            }
+        }
+    }
+}

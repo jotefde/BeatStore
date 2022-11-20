@@ -1,0 +1,48 @@
+#Tracks {
+
+    @include PageHeader();
+    padding: 0 40px;
+
+    .trackCard {
+        margin-top: 30px;
+        position: relative;
+
+        &__content {
+            border: 1px solid $grayColor;
+            border-bottom: none;
+            padding: 0;
+
+            .describedPicturePane__title {
+                padding: 0 0 15px;
+
+                .navLink {
+                    color: $mainFontColor;
+                    text-decoration: none;
+                }
+            }
+
+            .trackCard {
+                &__button {
+                    display: inline-block;
+                }
+            }
+        }
+
+        .buttonWrap {
+            padding: 0 12px;
+            margin: 0;
+
+            .button {
+
+
+                & > span {
+                    display: none;
+
+                    @include tablet {
+                        display: inline;
+                    }
+                }
+            }
+        }
+    }
+}

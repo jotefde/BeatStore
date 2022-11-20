@@ -1,0 +1,27 @@
+.paginationMenu
+{
+  display: inline-block;
+  line-height: 30px;
+  background: rgb(250, 250, 250);
+  color: rgb(100, 100, 100);
+  border: 1px solid $themeColor;
+  border-radius: 5px;
+  &__control
+  {
+    display: inline-block;
+    padding: 0 10px;
+    height: 100%;
+    cursor: pointer;
+    transition: $defaultTransition;
+    &--active
+    {
+      background: $lightenThemeColor;
+      color: rgb(255, 255, 255);
+      font-weight: bold;
+    }
+    &:hover
+    {
+      background: rgba($lightenThemeColor, 0.4);
+    }
+  }
+}

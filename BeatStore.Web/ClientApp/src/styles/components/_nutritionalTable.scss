@@ -1,0 +1,13 @@
+.nutritionalTable
+{
+  th, td
+  {
+    width: 50%;
+    word-break: keep-all;
+    white-space: nowrap;
+  }
+  td
+  {
+    text-align: center;
+  }
+}

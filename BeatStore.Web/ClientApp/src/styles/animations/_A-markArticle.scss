@@ -1,0 +1,16 @@
+@keyframes A-markArticle {
+  0% {
+    background: rgba($lightenThemeColor, 0.5);
+  }
+  99% {
+    background: none;
+    width: 100%;
+    height: 100%;
+  }
+  100%
+  {
+    background: none;
+    width: 0;
+    height: 0;
+  }
+}

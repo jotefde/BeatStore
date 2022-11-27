@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
-using BeatStore.API.Interfaces.Services;
+using BeatStore.API.Interfaces.Factories;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,15 +14,17 @@ namespace BeatStore.API.Factories
     {
         private readonly MinioClient _minioClient;
         private readonly ObjectStorageOptions _minioConnectionOptions;
+
+        [Obsolete]
         public MinioObjectStorageFactory(IOptions<ObjectStorageOptions> options)
         {
             _minioConnectionOptions = options.Value;
-            _minioClient = new MinioClient(
-                _minioConnectionOptions.ConnectionString,
-                _minioConnectionOptions.AccessKey,
-                _minioConnectionOptions.SecretKey);
+            _minioClient = new MinioClient()
+                .WithEndpoint(_minioConnectionOptions.ConnectionString)
+                .WithCredentials(_minioConnectionOptions.AccessKey, _minioConnectionOptions.SecretKey)
+                .Build();
 
-            var policyString = @"{
+            /*var policyString = @"{
               ""Version"": ""2012-10-17"",
               ""Statement"": [
                 {
@@ -30,43 +32,38 @@ namespace BeatStore.API.Factories
                   ""Effect"": ""Allow"",
                   ""Principal"": ""*"",
                   ""Action"": ""s3:GetObject"",
-                  ""Resource"": ""arn:aws:s3:::{PUBLIC_BUCKET_NAME}*""
+                  ""Resource"": ""arn:aws:s3:::{covers}*""
                 }
               ]
             }";
-            var policy = policyString.Replace("PUBLIC_BUCKET_NAME", _minioConnectionOptions.PublicBucketName);
-            _minioClient.SetPolicyAsync(_minioConnectionOptions.BucketName, policy.Trim());
+            _minioClient.SetPolicyAsync("covers", policyString.Trim());*/
         }
 
-        public async Task<string> AddObject(string id, string fileName, Stream fileStream)
+        public MinioClient GetClient()
         {
-            var objectName = string.Format("{0}_{1}", id, fileName);
-
-            await _minioClient.PutObjectAsync(_minioConnectionOptions.BucketName, objectName, fileStream, fileStream.Length, "application/octet-stream");
-
-            return objectName;
+            return _minioClient;
         }
 
-        public async Task<string> AddPublicObject(string id, string fileName, Stream fileStream)
+        [Obsolete]
+        public async Task<string> AddCoverImage(string fileName, Stream fileStream)
         {
-            var objectName = string.Format(_minioConnectionOptions.PublicObjectPrefix + "{0}-{1}", id, fileName);
+            await _minioClient.PutObjectAsync("covers", fileName, fileStream, fileStream.Length, "application/octet-stream");
 
-            await _minioClient.PutObjectAsync(_minioConnectionOptions.BucketName, objectName, fileStream, fileStream.Length, "application/octet-stream");
-
-            return objectName;
+            return fileName;
         }
 
-        public async Task<bool> DeleteObject(string objectName)
+        [Obsolete]
+        public async Task<bool> DeleteCoverImage(string objectName)
         {
-            await _minioClient.RemoveObjectAsync(_minioConnectionOptions.BucketName, objectName);
-
+            await _minioClient.RemoveObjectAsync("covers", objectName);
             return true;
         }
 
-        public async Task<string> GetObject(string objectName)
+        [Obsolete]
+        public async Task<string> GetCoverImage(string objectName)
         {
             var memStream = new MemoryStream();
-            await _minioClient.GetObjectAsync(_minioConnectionOptions.BucketName, objectName, (stream) => { 
+            await _minioClient.GetObjectAsync("covers", objectName, (stream) => { 
                 stream.CopyTo(memStream);
                 memStream.Flush();
                 memStream.Position = 0;

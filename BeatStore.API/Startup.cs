@@ -20,7 +20,7 @@ namespace BeatStore.API
 {
     public class Startup
     {
-        private const string SecretKey = "iNivDmHLpUA223sqsfhqGbMRdRj1PVkH"; // todo: get this from somewhere secure
+        private const string SecretKey = "iNivDmHLpUA223hg45645h5gsedrfgkuiRdRj1PVkH"; // todo: get this from somewhere secure
         private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
 
         public IConfiguration Configuration { get; }
@@ -35,6 +35,7 @@ namespace BeatStore.API
         {
             builder.RegisterModule(new UseCaseBuilder());
             builder.RegisterModule(new RepositoryBuilder());
+            builder.RegisterModule(new ServiceBuilder());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -120,9 +121,6 @@ namespace BeatStore.API
             services.Configure<ObjectStorageOptions>(options =>
             {
                 options.ConnectionString = objectStorageOptions[nameof(ObjectStorageOptions.ConnectionString)];
-                options.PublicBucketName = objectStorageOptions[nameof(ObjectStorageOptions.PublicBucketName)];
-                options.BucketName = objectStorageOptions[nameof(ObjectStorageOptions.BucketName)];
-                options.PublicObjectPrefix = objectStorageOptions[nameof(ObjectStorageOptions.PublicObjectPrefix)];
                 options.ObjectStorageBaseUrl = objectStorageOptions[nameof(ObjectStorageOptions.ObjectStorageBaseUrl)];
                 options.AccessKey = objectStorageOptions[nameof(ObjectStorageOptions.AccessKey)];
                 options.SecretKey = objectStorageOptions[nameof(ObjectStorageOptions.SecretKey)];

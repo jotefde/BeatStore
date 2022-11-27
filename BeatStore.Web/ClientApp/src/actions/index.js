@@ -18,8 +18,7 @@ export const ACTION_TYPE = {
     FETCH_SEARCH_FAILURE: 'FETCH_SEARCH_FAILURE'
 };
 
-//https://api.pronatura.com.pl
-const API_URL = 'https://api.pronatura.com.pl';
+const API_URL = 'http://localhost';
 const getRequest = (route) => axios.get(`${API_URL}/${route}`);
 const postRequest = (route, payload) => axios.post(`${API_URL}/${route}`, payload);
 const formRequest = (route, fields) => {

@@ -1,5 +1,5 @@
 ﻿using BeatStore.API.DTO;
-using BeatStore.API.Interfaces.Services;
+using BeatStore.API.Interfaces.Factories;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;

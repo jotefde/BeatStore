@@ -8,6 +8,8 @@ namespace BeatStore.API.Modules
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<ListAllTracksUseCase>().InstancePerLifetimeScope();
+            builder.RegisterType<GetTrackUseCase>().InstancePerLifetimeScope();
+            builder.RegisterType<CreateTrackUseCase>().InstancePerLifetimeScope();
         }
     }
 }

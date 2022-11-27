@@ -1,12 +1,8 @@
 ﻿using BeatStore.API.Context;
-using BeatStore.API.DTO;
 using BeatStore.API.DTO.Responses;
 using BeatStore.API.Entities;
-using BeatStore.API.Interfaces.DTO;
 using BeatStore.API.Interfaces.Repositories;
-using BeatStore.API.Interfaces.Services;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace BeatStore.API.Repositories
@@ -31,6 +27,41 @@ namespace BeatStore.API.Repositories
             {
                 Trace.WriteLine($"TrackRepository.GetAll: {e.Message}");
                 return new ListResponse<Track>(e.Message);
+            }
+        }
+
+        public async Task<ValueResponse<Track>> GetById(string trackId)
+        {
+            try
+            {
+                var results = await _dbContext.Tracks.Where(t => t.Id == trackId).FirstOrDefaultAsync();
+                return new ValueResponse<Track>(results);
+            }
+            catch(Exception e)
+            {
+                Trace.WriteLine($"TrackRepository.GetById: {e.Message}");
+                return new ValueResponse<Track>(e.Message);
+            }
+        }
+
+        public async Task<StandardResponse> Create(Track track)
+        {
+            try
+            {
+                var trackExists = _dbContext.Tracks.Where(t => t.Name.Equals(track.Name));
+                if(trackExists.Any())
+                    return new StandardResponse($"Track with name '{track.Name}' already exists.");
+
+                await _dbContext.Tracks.AddAsync(track);
+                var results = await _dbContext.SaveChangesAsync();
+                if (results < 1)
+                    throw new Exception("Something went wrong [SQL Exception]");
+                return new StandardResponse("Created");
+            }
+            catch(Exception e)
+            {
+                Trace.WriteLine($"TrackRepository.GetById: {e.Message}");
+                return new StandardResponse(e.Message, 500);
             }
         }
     }

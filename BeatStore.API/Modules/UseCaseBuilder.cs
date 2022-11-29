@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using BeatStore.API.UseCases.Stock;
 using BeatStore.API.UseCases.Tracks;
 
 namespace BeatStore.API.Modules
@@ -7,9 +8,16 @@ namespace BeatStore.API.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<ListAllTracksUseCase>().InstancePerLifetimeScope();
+            // Track use cases
+            builder.RegisterType<ListAllTrackUseCase>().InstancePerLifetimeScope();
             builder.RegisterType<GetTrackUseCase>().InstancePerLifetimeScope();
             builder.RegisterType<CreateTrackUseCase>().InstancePerLifetimeScope();
+
+            // Stock use cases
+            builder.RegisterType<ListAllStockUseCase>().InstancePerLifetimeScope();
+            builder.RegisterType<GetStockUseCase>().InstancePerLifetimeScope();
+            builder.RegisterType<CreateStockUseCase>().InstancePerLifetimeScope();
+            builder.RegisterType<UpdateStockUseCase>().InstancePerLifetimeScope();
         }
     }
 }

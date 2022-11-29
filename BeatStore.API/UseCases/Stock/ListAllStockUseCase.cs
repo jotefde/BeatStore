@@ -1,21 +1,20 @@
 ﻿using BeatStore.API.DTO.Responses;
 using BeatStore.API.Interfaces.Repositories;
 
-namespace BeatStore.API.UseCases.Tracks
+namespace BeatStore.API.UseCases.Stock
 {
-    public class ListAllTrackUseCase : ABaseUseCase
+    public class ListAllStockUseCase : ABaseUseCase
     {
-        private readonly ITrackRepository _trackRepository;
-        public ListAllTrackUseCase(ITrackRepository trackRepository)
+        private readonly IStockRepository _stockRepository;
+        public ListAllStockUseCase(IStockRepository stockRepository)
         {
-            _trackRepository = trackRepository;
+            _stockRepository = stockRepository;
         }
-
         public async Task<bool> Handle()
         {
             try
             {
-                var response = await _trackRepository.GetAll();
+                var response = await _stockRepository.GetAll();
                 OutputPort = response;
                 return response != null;
             }

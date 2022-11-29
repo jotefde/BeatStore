@@ -48,8 +48,8 @@ namespace BeatStore.API.Repositories
         {
             try
             {
-                var trackExists = _dbContext.Tracks.Where(t => t.Name.Equals(track.Name));
-                if(trackExists.Any())
+                var trackExists = await _dbContext.Tracks.AnyAsync(t => t.Name.Equals(track.Name));
+                if(trackExists)
                     return new StandardResponse($"Track with name '{track.Name}' already exists.");
 
                 await _dbContext.Tracks.AddAsync(track);

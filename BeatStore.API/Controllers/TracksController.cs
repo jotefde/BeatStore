@@ -12,6 +12,7 @@ using BeatStore.API.Interfaces.Repositories;
 using BeatStore.API.UseCases.Tracks;
 using BeatStore.API.DTO.Responses;
 using BeatStore.API.DTO.Requests.Tracks;
+using BeatStore.API.DTO.Requests.Stock;
 
 namespace BeatStore.API.Controllers
 {
@@ -20,12 +21,12 @@ namespace BeatStore.API.Controllers
     public class TracksController : ControllerBase
     {
         #region UseCases
-        private readonly ListAllTracksUseCase _listAllTracksUseCase;
+        private readonly ListAllTrackUseCase _listAllTracksUseCase;
         private readonly GetTrackUseCase _getTrackUseCase;
         private readonly CreateTrackUseCase _createTrackUseCase;
         #endregion
 
-        public TracksController(ListAllTracksUseCase listAllTracksUseCase, GetTrackUseCase getTrackUseCase, CreateTrackUseCase createTrackUseCase)
+        public TracksController(ListAllTrackUseCase listAllTracksUseCase, GetTrackUseCase getTrackUseCase, CreateTrackUseCase createTrackUseCase)
         {
             _listAllTracksUseCase = listAllTracksUseCase;
             _getTrackUseCase = getTrackUseCase;
@@ -34,7 +35,7 @@ namespace BeatStore.API.Controllers
 
 
         #region GET /tracks
-        [HttpGet("/tracks")]
+        [HttpGet("tracks")]
         public async Task<ActionResult> GetTracks()
         {
             var result = await _listAllTracksUseCase.Handle();

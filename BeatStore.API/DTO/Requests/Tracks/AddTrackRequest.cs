@@ -6,13 +6,14 @@ namespace BeatStore.API.DTO.Requests.Tracks
 {
     public class AddTrackRequest
     {
-        [Required]
+        [Required(ErrorMessage = "Name cannot be empty")]
         [DataType(DataType.Text)]
         public string Name { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Price cannot be empty")]
         [DataType(DataType.Currency)]
         public float Price { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Description cannot be empty")]
         [DataType(DataType.Text)]
         public string Description { get; set; }
         [DataType(DataType.Upload)]

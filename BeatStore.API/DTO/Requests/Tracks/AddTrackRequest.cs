@@ -18,6 +18,6 @@ namespace BeatStore.API.DTO.Requests.Tracks
         public string Description { get; set; }
         [DataType(DataType.Upload)]
         [Display(Name="Cover image file")]
-        public IFormFile CoverImage { get; set; }
+        public IFormFile? CoverImage { get; set; }
     }
 }

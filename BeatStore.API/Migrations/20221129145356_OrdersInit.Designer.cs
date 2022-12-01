@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeatStore.API.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20221103143431_OrdersInit")]
+    [Migration("20221129145356_OrdersInit")]
     partial class OrdersInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,7 +97,6 @@ namespace BeatStore.API.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("TrackId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id")
@@ -107,7 +106,7 @@ namespace BeatStore.API.Migrations
 
                     b.HasIndex("TrackId");
 
-                    b.ToTable("OrderItem");
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("BeatStore.API.Entities.Stock", b =>
@@ -116,23 +115,25 @@ namespace BeatStore.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Amount")
+                    b.Property<int?>("Amount")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsUnlimited")
+                    b.Property<bool?>("IsPublished")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsUnlimited")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("ModifiedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("PublishTime")
+                    b.Property<DateTime?>("PublishTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("TrackId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id")
@@ -179,16 +180,14 @@ namespace BeatStore.API.Migrations
             modelBuilder.Entity("BeatStore.API.Entities.OrderItem", b =>
                 {
                     b.HasOne("BeatStore.API.Entities.OrderDetails", "OrderDetails")
-                        .WithMany()
+                        .WithMany("Items")
                         .HasForeignKey("OrderDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BeatStore.API.Entities.Track", "Track")
                         .WithMany()
-                        .HasForeignKey("TrackId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TrackId");
 
                     b.Navigation("OrderDetails");
 
@@ -199,11 +198,14 @@ namespace BeatStore.API.Migrations
                 {
                     b.HasOne("BeatStore.API.Entities.Track", "Track")
                         .WithMany()
-                        .HasForeignKey("TrackId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TrackId");
 
                     b.Navigation("Track");
+                });
+
+            modelBuilder.Entity("BeatStore.API.Entities.OrderDetails", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

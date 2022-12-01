@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeatStore.API.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20221128174126_Stock-IsPublishedProp")]
-    partial class StockIsPublishedProp
+    [Migration("20221129224231_Orders_EnumHandling")]
+    partial class Orders_EnumHandling
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,9 +33,8 @@ namespace BeatStore.API.Migrations
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CurrencyCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CurrencyCode")
+                        .HasColumnType("int");
 
                     b.Property<string>("CustomerEmail")
                         .IsRequired()
@@ -115,22 +114,22 @@ namespace BeatStore.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Amount")
+                    b.Property<int?>("Amount")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsPublished")
+                    b.Property<bool?>("IsPublished")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsUnlimited")
+                    b.Property<bool?>("IsUnlimited")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("ModifiedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("PublishTime")
+                    b.Property<DateTime?>("PublishTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("TrackId")
@@ -180,7 +179,7 @@ namespace BeatStore.API.Migrations
             modelBuilder.Entity("BeatStore.API.Entities.OrderItem", b =>
                 {
                     b.HasOne("BeatStore.API.Entities.OrderDetails", "OrderDetails")
-                        .WithMany()
+                        .WithMany("Items")
                         .HasForeignKey("OrderDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -201,6 +200,11 @@ namespace BeatStore.API.Migrations
                         .HasForeignKey("TrackId");
 
                     b.Navigation("Track");
+                });
+
+            modelBuilder.Entity("BeatStore.API.Entities.OrderDetails", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

@@ -54,7 +54,7 @@ namespace BeatStore.API.Controllers
             }
             var isGUIDValid = Guid.TryParse(stockId, out _);
             if (!isGUIDValid)
-                return new StandardResponse("Wrong Id format.", 404).Data;
+                return new StandardResponse("Wrong Id format", 400).Data;
 
             var result = await _getStockUseCase.Handle(stockId);
             if (result)

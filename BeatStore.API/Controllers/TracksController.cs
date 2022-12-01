@@ -79,10 +79,17 @@ namespace BeatStore.API.Controllers
                 Price = trackModel.Price,
                 Description = trackModel.Description
             };
-            var imageStream = new MemoryStream();
-            await trackModel.CoverImage.CopyToAsync(imageStream);
-            var imageExt = Path.GetExtension(trackModel.CoverImage.FileName);
-            var result = await _createTrackUseCase.Handle(track, imageStream, imageExt);
+
+            bool result = false;
+            if(trackModel.CoverImage != null)
+            {
+                var imageStream = new MemoryStream();
+                await trackModel.CoverImage.CopyToAsync(imageStream);
+                var imageExt = Path.GetExtension(trackModel.CoverImage.FileName);
+                result = await _createTrackUseCase.Handle(track, imageStream, imageExt);
+            }
+            else
+                result = await _createTrackUseCase.Handle(track);
             if (result)
                 return _createTrackUseCase.OutputPort?.Data;
             return new StandardResponse("OutputPort is empty", 500).Data;

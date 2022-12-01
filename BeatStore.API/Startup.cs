@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Converters;
 using System.Net;
 using System.Reflection;
 using System.Text;
@@ -153,14 +154,11 @@ namespace BeatStore.API
                 configureOptions.TokenValidationParameters = tokenValidationParameters;
                 configureOptions.SaveToken = true;
             });
-
-            // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SuperBET API", Version = "v1" });
-            });
-
-            services.AddControllers();
+            services.AddSwaggerGen();
+            services.AddControllers()
+                .AddNewtonsoftJson(options => options.SerializerSettings.Converters.Add(new StringEnumConverter()));
+            // order is vital, this *must* be called *after* AddNewtonsoftJson()
+            services.AddSwaggerGenNewtonsoftSupport();
         }
     }
 }

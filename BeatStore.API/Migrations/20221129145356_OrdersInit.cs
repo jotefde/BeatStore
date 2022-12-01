@@ -50,12 +50,12 @@ namespace BeatStore.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderItem",
+                name: "OrderItems",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     OrderDetailsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TrackId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TrackId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -63,17 +63,16 @@ namespace BeatStore.API.Migrations
                 {
                     table.PrimaryKey("PK_OrderItemId", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderItem_OrderDetails_OrderDetailsId",
+                        name: "FK_OrderItems_OrderDetails_OrderDetailsId",
                         column: x => x.OrderDetailsId,
                         principalTable: "OrderDetails",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderItem_Tracks_TrackId",
+                        name: "FK_OrderItems_Tracks_TrackId",
                         column: x => x.TrackId,
                         principalTable: "Tracks",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -81,10 +80,11 @@ namespace BeatStore.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TrackId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false),
-                    PublishTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsUnlimited = table.Column<bool>(type: "bit", nullable: false),
+                    TrackId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Amount = table.Column<int>(type: "int", nullable: true),
+                    PublishTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsUnlimited = table.Column<bool>(type: "bit", nullable: true),
+                    IsPublished = table.Column<bool>(type: "bit", nullable: true),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -95,18 +95,17 @@ namespace BeatStore.API.Migrations
                         name: "FK_Stock_Tracks_TrackId",
                         column: x => x.TrackId,
                         principalTable: "Tracks",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItem_OrderDetailsId",
-                table: "OrderItem",
+                name: "IX_OrderItems_OrderDetailsId",
+                table: "OrderItems",
                 column: "OrderDetailsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItem_TrackId",
-                table: "OrderItem",
+                name: "IX_OrderItems_TrackId",
+                table: "OrderItems",
                 column: "TrackId");
 
             migrationBuilder.CreateIndex(
@@ -118,7 +117,7 @@ namespace BeatStore.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "OrderItem");
+                name: "OrderItems");
 
             migrationBuilder.DropTable(
                 name: "Stock");

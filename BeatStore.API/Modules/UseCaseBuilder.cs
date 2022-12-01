@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using BeatStore.API.UseCases.Orders;
 using BeatStore.API.UseCases.Stock;
 using BeatStore.API.UseCases.Tracks;
 
@@ -18,6 +19,9 @@ namespace BeatStore.API.Modules
             builder.RegisterType<GetStockUseCase>().InstancePerLifetimeScope();
             builder.RegisterType<CreateStockUseCase>().InstancePerLifetimeScope();
             builder.RegisterType<UpdateStockUseCase>().InstancePerLifetimeScope();
+
+            // Order use cases
+            builder.RegisterType<CreateOrderUseCase>().InstancePerLifetimeScope();
         }
     }
 }

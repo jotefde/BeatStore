@@ -19,14 +19,15 @@ namespace BeatStore.API.Context
             modelBuilder.Entity<Track>()
                 .HasKey(e => e.Id)
                 .HasName("PK_TrackId");
+
             modelBuilder.Entity<Stock>()
                 .HasKey(e => e.Id)
                 .HasName("PK_StockId");
 
-
             modelBuilder.Entity<OrderDetails>()
                 .HasKey(e => e.Id)
                 .HasName("PK_OrderDetailsId");
+
             modelBuilder.Entity<OrderItem>()
                 .HasKey(e => e.Id)
                 .HasName("PK_OrderItemId");

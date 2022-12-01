@@ -9,7 +9,7 @@ namespace BeatStore.API.DTO.Requests.Stock
     {
         [Required(ErrorMessage = "Id is invalid")]
         [DataType(DataType.Text)]
-        [StringLength(36)]
+        [StringLength(maximumLength: 36, MinimumLength = 36)]
         public string TrackId { get; set; }
         public int Amount { get; set; } = 0;
         public bool IsUnlimited { get; set; } = true;

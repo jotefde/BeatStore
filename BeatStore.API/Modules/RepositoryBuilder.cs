@@ -11,6 +11,7 @@ namespace BeatStore.API.Modules
         {
             builder.RegisterType<TrackRepository>().As<ITrackRepository>().InstancePerLifetimeScope();
             builder.RegisterType<StockRepository>().As<IStockRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<OrderRepository>().As<IOrderRepository>().InstancePerLifetimeScope();
         }
     }
 }

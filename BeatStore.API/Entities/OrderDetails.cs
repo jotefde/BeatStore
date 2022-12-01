@@ -6,7 +6,7 @@ namespace BeatStore.API.Entities
     {
         public string PaymentId { get; set; }
         public string Description { get; set; }
-        public string CurrencyCode { get; set; } = "PLN";
+        public Currency CurrencyCode { get; set; } = Currency.PLN;
         public PaymentMethod PayMethod { get; set; } = PaymentMethod.PBL;
         public OrderStatus Status { get; set; } = OrderStatus.PENDING;
         public string CustomerIP { get; set; }
@@ -14,5 +14,6 @@ namespace BeatStore.API.Entities
         public string CustomerPhone { get; set; }
         public string CustomerFirstName { get; set; }
         public string CustomerLastName { get; set; }
+        public List<OrderItem> Items { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using BeatStore.API.Context;
 using BeatStore.API.DTO.Responses;
 using BeatStore.API.Entities;
+using BeatStore.API.Helpers;
 using BeatStore.API.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -48,7 +49,7 @@ namespace BeatStore.API.Repositories
         {
             try
             {
-                var trackExists = await _dbContext.Tracks.AnyAsync(t => t.Name.Equals(track.Name));
+                var trackExists = await _dbContext.Tracks.AnyAsync(t => t.Slug.Equals(Slugify.Generate(track.Name)));
                 if(trackExists)
                     return new StandardResponse($"Track with name '{track.Name}' already exists.");
 

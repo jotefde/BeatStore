@@ -11,6 +11,7 @@ using BeatStore.API.DTO.Responses;
 using BeatStore.API.DTO.Requests.Orders;
 using BeatStore.API.UseCases.Orders;
 using BeatStore.API.Helpers.Enums;
+using System.Net;
 
 namespace BeatStore.API.Controllers
 {
@@ -19,7 +20,7 @@ namespace BeatStore.API.Controllers
     public class OrdersController : ControllerBase
     {
         #region UseCases
-        CreateOrderUseCase _createOrderUseCase;
+        private readonly CreateOrderUseCase _createOrderUseCase;
         #endregion
 
         public OrdersController(CreateOrderUseCase createOrderUseCase)
@@ -36,14 +37,16 @@ namespace BeatStore.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            if(orderModel.Items?.Count() < 1)
-                return new StandardResponse("Item list is empty", 400).Data;
+            if (orderModel.Items?.Count() < 1)
+                return new StandardResponse("Item list is empty", HttpStatusCode.BadRequest)
+                    .GetResult();
 
             foreach (var trackId in orderModel.Items)
             {
                 var isGUIDValid = Guid.TryParse(trackId, out _);
                 if (!isGUIDValid)
-                    return new StandardResponse("Wrong Id format", 400).Data;
+                    return new StandardResponse("Wrong Id format", HttpStatusCode.BadRequest)
+                        .GetResult();
             }
 
             var order = new OrderDetails 
@@ -58,10 +61,8 @@ namespace BeatStore.API.Controllers
                 CustomerLastName= orderModel.CustomerLastName
             };
 
-            var result = await _createOrderUseCase.Handle(order, orderModel.Items);
-            if (result)
-                return _createOrderUseCase.OutputPort?.Data;
-            return new StandardResponse("OutputPort is empty", 500).Data;
+            await _createOrderUseCase.Handle(order, orderModel.Items);
+            return _createOrderUseCase.OutputPort.GetResult();
         }
         #endregion
     }

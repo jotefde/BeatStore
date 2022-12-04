@@ -1,7 +1,10 @@
 ﻿using Autofac;
+using BeatStore.API.UseCases.Accounts;
+using BeatStore.API.UseCases.Auth;
 using BeatStore.API.UseCases.Orders;
 using BeatStore.API.UseCases.Stock;
 using BeatStore.API.UseCases.Tracks;
+using BeatStore.API.UseCases.TrackStorage;
 
 namespace BeatStore.API.Modules
 {
@@ -9,6 +12,12 @@ namespace BeatStore.API.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
+            // Auth use cases
+            builder.RegisterType<CreateTokenUseCase>().InstancePerLifetimeScope();
+
+            // Account use cases
+            builder.RegisterType<CreateUserUseCase>().InstancePerLifetimeScope();
+
             // Track use cases
             builder.RegisterType<ListAllTrackUseCase>().InstancePerLifetimeScope();
             builder.RegisterType<GetTrackUseCase>().InstancePerLifetimeScope();
@@ -22,6 +31,9 @@ namespace BeatStore.API.Modules
 
             // Order use cases
             builder.RegisterType<CreateOrderUseCase>().InstancePerLifetimeScope();
+
+            // Track storage use cases
+            builder.RegisterType<CreateTrackObjectsUseCase>().InstancePerLifetimeScope();
         }
     }
 }

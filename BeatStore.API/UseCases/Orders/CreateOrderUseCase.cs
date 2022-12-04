@@ -12,19 +12,17 @@ namespace BeatStore.API.UseCases.Orders
             _orderRepository = orderRepository;
         }
 
-        public async Task<bool> Handle(OrderDetails order, IEnumerable<string> orderItems)
+        public async Task Handle(OrderDetails order, IEnumerable<string> orderItems)
         {
             try
             {
                 order.Id = Guid.NewGuid().ToString();
                 var response = await _orderRepository.Create(order, orderItems);
                 OutputPort = response;
-                return response != null;
             }
             catch (Exception e)
             {
-                OutputPort = new StandardResponse(e.Message, 500);
-                return true;
+                OutputPort = new StandardResponse(e.Message, System.Net.HttpStatusCode.InternalServerError);
             }
         }
     }

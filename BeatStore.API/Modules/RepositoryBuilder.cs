@@ -9,9 +9,11 @@ namespace BeatStore.API.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
             builder.RegisterType<TrackRepository>().As<ITrackRepository>().InstancePerLifetimeScope();
             builder.RegisterType<StockRepository>().As<IStockRepository>().InstancePerLifetimeScope();
             builder.RegisterType<OrderRepository>().As<IOrderRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<TrackStorageRepository>().As<ITrackStorageRepository>().InstancePerLifetimeScope();
         }
     }
 }

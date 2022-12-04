@@ -17,18 +17,16 @@ namespace BeatStore.API.UseCases.Stock
             _stockRepository = stockRepository;
         }
 
-        public async Task<bool> Handle(Entities.Stock stock)
+        public async Task Handle(Entities.Stock stock)
         {
             try
             {
                 var response = await _stockRepository.Update(stock);
                 OutputPort = response;
-                return response != null;
             }
             catch(Exception e)
             {
-                OutputPort = new StandardResponse(e.Message, 500);
-                return true;
+                OutputPort = new StandardResponse(e.Message, System.Net.HttpStatusCode.InternalServerError);
             }
         }
     }

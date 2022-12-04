@@ -5,6 +5,7 @@ using BeatStore.API.Helpers;
 using BeatStore.API.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Net;
 
 namespace BeatStore.API.Repositories
 {
@@ -51,18 +52,18 @@ namespace BeatStore.API.Repositories
             {
                 var trackExists = await _dbContext.Tracks.AnyAsync(t => t.Slug.Equals(Slugify.Generate(track.Name)));
                 if(trackExists)
-                    return new StandardResponse($"Track with name '{track.Name}' already exists.");
+                    return new StandardResponse($"Track with name '{track.Name}' already exists.", System.Net.HttpStatusCode.Forbidden);
 
                 await _dbContext.Tracks.AddAsync(track);
                 var results = await _dbContext.SaveChangesAsync();
                 if (results < 1)
                     throw new Exception("Something went wrong [SQL Exception]");
-                return new StandardResponse("Created");
+                return new StandardResponse(track.Id);
             }
             catch(Exception e)
             {
-                Trace.WriteLine($"TrackRepository.GetById: {e.Message}");
-                return new StandardResponse(e.Message, 500);
+                Trace.WriteLine($"TrackRepository.Create: {e.Message}");
+                return new StandardResponse(e.Message, System.Net.HttpStatusCode.InternalServerError);
             }
         }
     }

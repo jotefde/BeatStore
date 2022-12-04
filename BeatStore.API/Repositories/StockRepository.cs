@@ -4,6 +4,7 @@ using BeatStore.API.Entities;
 using BeatStore.API.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Net;
 
 namespace BeatStore.API.Repositories
 {
@@ -53,10 +54,10 @@ namespace BeatStore.API.Repositories
             {
                 var track = await _dbContext.Tracks.FindAsync(stock.Track.Id);
                 if (track == null)
-                    return new StandardResponse($"Track with Id '{stock.Track.Id}' does not exists.");
+                    return new StandardResponse($"Track with Id '{stock.Track.Id}' does not exists.", HttpStatusCode.Forbidden);
                 var stockExists = await _dbContext.Stock.AnyAsync(s => s.Track.Id.Equals(stock.Track.Id));
                 if(stockExists)
-                    return new StandardResponse($"Stock for track '{stock.Track.Id}' already exists.");
+                    return new StandardResponse($"Stock for track '{stock.Track.Id}' already exists.", HttpStatusCode.Forbidden);
 
                 stock.Track = track;
 
@@ -66,12 +67,12 @@ namespace BeatStore.API.Repositories
                 var results = await _dbContext.SaveChangesAsync();
                 if (results < 1)
                     throw new Exception("Something went wrong [SQL Exception]");
-                return new StandardResponse("Created");
+                return new StandardResponse(stock.Id);
             }
             catch(Exception e)
             {
                 Trace.WriteLine($"StockRepository.Create: {e.Message}");
-                return new StandardResponse(e.Message, 500);
+                return new StandardResponse(e.Message, HttpStatusCode.InternalServerError);
             }
         }
 
@@ -86,9 +87,9 @@ namespace BeatStore.API.Repositories
             {
                 var stockBuff = await _dbContext.Stock.FindAsync(stock.Id);
                 if(stockBuff == null)
-                    return new ValueResponse<Stock>($"Stock with Id '{stock.Id}' does not exists.");
+                    return new ValueResponse<Stock>($"Stock with Id '{stock.Id}' does not exists.", HttpStatusCode.NotFound);
 
-                if(stock.Amount != null)
+                if (stock.Amount != null)
                     stockBuff.Amount = stock.Amount;
                 if(stock.IsUnlimited != null)
                     stockBuff.IsUnlimited= stock.IsUnlimited;
@@ -108,7 +109,7 @@ namespace BeatStore.API.Repositories
             catch(Exception e)
             {
                 Trace.WriteLine($"StockRepository.Update: {e.Message}");
-                return new ValueResponse<Stock>(e.Message, 500);
+                return new ValueResponse<Stock>(e.Message, HttpStatusCode.InternalServerError);
             }
         }
     }

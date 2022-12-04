@@ -1,9 +1,10 @@
 ﻿using BeatStore.API.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BeatStore.API.Context
 {
-    public class ApplicationDBContext : DbContext
+    public class ApplicationDBContext : IdentityDbContext<AppUser>
     {
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
         {
@@ -11,11 +12,14 @@ namespace BeatStore.API.Context
 
         public DbSet<Track>? Tracks { get; set; }
         public DbSet<Stock>? Stock { get; set; }
-        public DbSet<OrderDetails>? OrderDetails { get; set; }
+        public DbSet<OrderDetails>? Orders { get; set; }
         public DbSet<OrderItem>? OrderItems { get; set; }
+        public DbSet<TrackObjects>? TrackStorage { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Track>()
                 .HasKey(e => e.Id)
                 .HasName("PK_TrackId");
@@ -31,7 +35,12 @@ namespace BeatStore.API.Context
             modelBuilder.Entity<OrderItem>()
                 .HasKey(e => e.Id)
                 .HasName("PK_OrderItemId");
+
+            modelBuilder.Entity<TrackObjects>()
+                .HasKey(e => e.Id)
+                .HasName("PK_TrackObjectsId");
         }
+
         public override int SaveChanges()
         {
             AddAuitInfo();

@@ -19,26 +19,24 @@ namespace BeatStore.API.UseCases.Tracks
             _minioOS = minioOS;
         }
 
-        public async Task<bool> Handle(Track track, MemoryStream coverFile = null, string coverExt = "")
+        public async Task Handle(Track track, MemoryStream coverFile = null, string coverExt = "")
         {
             try
             {
                 track.Id = Guid.NewGuid().ToString();
                 track.Slug = Slugify.Generate(track.Name);
                 var response = await _trackRepository.Create(track);
-                if (response?.Data?.StatusCode == 200 && coverFile != null)
+                if (response.Success && coverFile != null)
                 {
                     coverFile.Position = 0;
                     await _minioOS.AddCoverImage($"{track.Slug}{coverExt}", coverFile);
                     coverFile.Close();
                 }
                 OutputPort = response;
-                return response != null;
             }
             catch(Exception e)
             {
-                OutputPort = new StandardResponse(e.Message, 500);
-                return true;
+                OutputPort = new StandardResponse(e.Message, System.Net.HttpStatusCode.InternalServerError);
             }
         }
     }

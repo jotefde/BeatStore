@@ -13,6 +13,7 @@ using BeatStore.API.UseCases.Tracks;
 using BeatStore.API.DTO.Responses;
 using BeatStore.API.DTO.Requests.Tracks;
 using BeatStore.API.DTO.Requests.Stock;
+using System.Net;
 
 namespace BeatStore.API.Controllers
 {
@@ -38,10 +39,8 @@ namespace BeatStore.API.Controllers
         [HttpGet("tracks")]
         public async Task<ActionResult> GetTracks()
         {
-            var result = await _listAllTracksUseCase.Handle();
-            if (result)
-                return _listAllTracksUseCase.OutputPort?.Data;
-            return new StandardResponse("OutputPort is empty", 500).Data;
+            await _listAllTracksUseCase.Handle();
+            return _listAllTracksUseCase.OutputPort.GetResult();
         }
         #endregion
 
@@ -55,12 +54,11 @@ namespace BeatStore.API.Controllers
             }
             var isGUIDValid = Guid.TryParse(trackId, out _);
             if (!isGUIDValid)
-                return new StandardResponse("Wrong track id format.", 404).Data;
+                return new StandardResponse("Wrong track id format.", HttpStatusCode.NotFound)
+                    .GetResult();
 
-            var result = await _getTrackUseCase.Handle(trackId);
-            if (result)
-                return _getTrackUseCase.OutputPort?.Data;
-            return new StandardResponse("OutputPort is empty", 500).Data;
+            await _getTrackUseCase.Handle(trackId);
+            return _getTrackUseCase.OutputPort.GetResult();
         }
         #endregion
 
@@ -80,19 +78,17 @@ namespace BeatStore.API.Controllers
                 Description = trackModel.Description
             };
 
-            bool result = false;
             if(trackModel.CoverImage != null)
             {
                 var imageStream = new MemoryStream();
                 await trackModel.CoverImage.CopyToAsync(imageStream);
                 var imageExt = Path.GetExtension(trackModel.CoverImage.FileName);
-                result = await _createTrackUseCase.Handle(track, imageStream, imageExt);
+                await _createTrackUseCase.Handle(track, imageStream, imageExt);
             }
             else
-                result = await _createTrackUseCase.Handle(track);
-            if (result)
-                return _createTrackUseCase.OutputPort?.Data;
-            return new StandardResponse("OutputPort is empty", 500).Data;
+                await _createTrackUseCase.Handle(track);
+
+            return _createTrackUseCase.OutputPort.GetResult();
         }
         #endregion
     }

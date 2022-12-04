@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Minio;
 using BeatStore.API.DTO;
+using System.Diagnostics;
 
 namespace BeatStore.API.Factories
 {
@@ -48,7 +49,6 @@ namespace BeatStore.API.Factories
         public async Task<string> AddCoverImage(string fileName, Stream fileStream)
         {
             await _minioClient.PutObjectAsync("covers", fileName, fileStream, fileStream.Length, "application/octet-stream");
-
             return fileName;
         }
 
@@ -74,6 +74,22 @@ namespace BeatStore.API.Factories
             memStream.Close();
             readStream.Close();
             return content;
+        }
+
+        [Obsolete]
+        public async Task<bool> AddTrackObject(string trackId, string fileName, Stream fileStream)
+        {
+            try
+            {
+                fileStream.Position = 0;
+                await _minioClient.PutObjectAsync("tracks", $"{trackId}/{fileName}", fileStream, fileStream.Length, "application/octet-stream");
+                return true;
+            }
+            catch(Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
+                return false; 
+            }
         }
     }
 }

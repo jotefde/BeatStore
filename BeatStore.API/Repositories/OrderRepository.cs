@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Minio.DataModel;
 using System;
 using System.Diagnostics;
+using System.Net;
 
 namespace BeatStore.API.Repositories
 {
@@ -23,11 +24,10 @@ namespace BeatStore.API.Repositories
             try
             {
                 order.Status = Helpers.Enums.OrderStatus.PENDING;
-                order.PaymentId = "FFEFEWW#$rw3w3fw3ff3wfw3EF";
                 var existsTrackCount = await _dbContext.Stock.CountAsync(
                     s => trackIds.Contains(s.Track.Id) && s.IsAvailable());
                 if(existsTrackCount != trackIds.Count())
-                    return new StandardResponse("Cannot recognize one or more tracks with given ids");
+                    return new StandardResponse("Cannot recognize one or more tracks with given ids", HttpStatusCode.NotFound);
 
                 await _dbContext.AddAsync<OrderDetails>(order);
 
@@ -44,12 +44,12 @@ namespace BeatStore.API.Repositories
                 if (results < orderItems.Count() + 1)
                     throw new Exception("Something went wrong [SQL Exception]");
 
-                return new StandardResponse("Created");
+                return new StandardResponse(order.Id);
             }
             catch (Exception e)
             {
-                Trace.WriteLine($"StockRepository.Create: {e.Message}");
-                return new StandardResponse(e.Message, 500);
+                Trace.WriteLine($"OrderRepository.Create: {e.Message}");
+                return new StandardResponse(e.Message, HttpStatusCode.InternalServerError);
             }
         }
     }

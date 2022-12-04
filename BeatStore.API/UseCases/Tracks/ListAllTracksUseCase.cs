@@ -11,18 +11,16 @@ namespace BeatStore.API.UseCases.Tracks
             _trackRepository = trackRepository;
         }
 
-        public async Task<bool> Handle()
+        public async Task Handle()
         {
             try
             {
                 var response = await _trackRepository.GetAll();
                 OutputPort = response;
-                return response != null;
             }
             catch(Exception e)
             {
-                OutputPort = new StandardResponse(e.Message, 500);
-                return true;
+                OutputPort = new StandardResponse(e.Message, System.Net.HttpStatusCode.InternalServerError);
             }
         }
     }

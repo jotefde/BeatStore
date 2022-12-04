@@ -1,33 +1,55 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BeatStore.API.DTO;
+using BeatStore.API.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NJsonSchema.Infrastructure;
+using System.Net;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace BeatStore.API.Interfaces.DTO.Responses
 {
-    public abstract class AJsonResponse : ABaseResponse
+    public abstract class AJsonResponse<T> : ABaseResponse<T>
     {
-        public AJsonResponse(string errMsg, int errCode = 404)
+        public AJsonResponse(IEnumerable<string> errors, HttpStatusCode errCode)
         {
-            Data = new ContentResult();
-            SetContent(errMsg);
-            Data.StatusCode = errCode;
+            StatusCode = errCode;
+            Errors = new List<string>(errors);
+            Success = false;
+        }
+        public AJsonResponse(string errMsg, HttpStatusCode errCode)
+        {
+            StatusCode = errCode;
+            Errors = new List<string>() { errMsg };
+            Success = false;
         }
 
-        public AJsonResponse(int code = 200)
+        public AJsonResponse(HttpStatusCode code)
         {
-            Data = new ContentResult();
-            Data.StatusCode = code;
+            StatusCode = code;
+            Success = true;
         }
 
-        public void SetContent(Object data)
+        public override ABaseResponse<T> SetData(T data)
         {
-            Data.ContentType = "application/json";
+            Data = data;
+            return this;
+        }
+
+        public override ContentResult GetResult()
+        {
+            var result = new ContentResult();
+            result.StatusCode = (int)StatusCode;
+            result.ContentType = "application/json";
             var jsonResolver = new PropertyRenameAndIgnoreSerializerContractResolver();
-            //jsonResolver.IgnoreProperty(typeof(User), "PasswordHash");
-
+            jsonResolver.IgnoreProperty(typeof(AppUser), "PasswordHash");
             var serializerSettings = new JsonSerializerSettings();
             serializerSettings.ContractResolver = jsonResolver;
-            Data.Content = JsonConvert.SerializeObject(data, serializerSettings);
+
+            if(Success)
+                result.Content = JsonConvert.SerializeObject(Data, serializerSettings);
+            else
+                result.Content = JsonConvert.SerializeObject(new { errors = Errors });
+            return result;
         }
     }
 }

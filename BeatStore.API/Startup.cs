@@ -2,7 +2,9 @@
 using Autofac.Extensions.DependencyInjection;
 using BeatStore.API.Context;
 using BeatStore.API.DTO;
+using BeatStore.API.Entities;
 using BeatStore.API.Extensions;
+using BeatStore.API.Helpers.Enums;
 using BeatStore.API.Modules;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
@@ -12,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json.Converters;
 using System.Net;
 using System.Reflection;
@@ -154,7 +157,47 @@ namespace BeatStore.API
                 configureOptions.TokenValidationParameters = tokenValidationParameters;
                 configureOptions.SaveToken = true;
             });
-            services.AddSwaggerGen();
+
+            // add identity
+            var identityBuilder = services.AddIdentityCore<AppUser>(o =>
+            {
+                // configure identity options
+                o.Password.RequireDigit = false;
+                o.Password.RequireLowercase = false;
+                o.Password.RequireUppercase = false;
+                o.Password.RequireNonAlphanumeric = false;
+                o.Password.RequiredLength = 6;
+                o.SignIn.RequireConfirmedEmail = false;
+                o.User.RequireUniqueEmail = false;
+            });
+
+            identityBuilder = new IdentityBuilder(identityBuilder.UserType, typeof(IdentityRole), identityBuilder.Services);
+            identityBuilder.AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders();
+            //services.AddDefaultIdentity<AppUser>().AddUserStore<ApplicationDBContext>();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                    {
+                        new OpenApiSecurityScheme {
+                            Reference = new OpenApiReference {
+                                Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
+            });
             services.AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.Converters.Add(new StringEnumConverter()));
             // order is vital, this *must* be called *after* AddNewtonsoftJson()

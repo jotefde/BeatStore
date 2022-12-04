@@ -4,6 +4,7 @@ using BeatStore.API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeatStore.API.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20221202132551_AppUserEntity")]
+    partial class AppUserEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,6 +65,10 @@ namespace BeatStore.API.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -139,7 +145,7 @@ namespace BeatStore.API.Migrations
                     b.HasKey("Id")
                         .HasName("PK_OrderDetailsId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("BeatStore.API.Entities.OrderItem", b =>
@@ -239,41 +245,6 @@ namespace BeatStore.API.Migrations
                         .HasName("PK_TrackId");
 
                     b.ToTable("Tracks");
-                });
-
-            modelBuilder.Entity("BeatStore.API.Entities.TrackObjects", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ModifiedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("SampleFile")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TrackId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("TrackoutFile")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("WaveFile")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id")
-                        .HasName("PK_TrackObjectsId");
-
-                    b.HasIndex("TrackId");
-
-                    b.ToTable("TrackStorage");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -429,17 +400,6 @@ namespace BeatStore.API.Migrations
                 });
 
             modelBuilder.Entity("BeatStore.API.Entities.Stock", b =>
-                {
-                    b.HasOne("BeatStore.API.Entities.Track", "Track")
-                        .WithMany()
-                        .HasForeignKey("TrackId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Track");
-                });
-
-            modelBuilder.Entity("BeatStore.API.Entities.TrackObjects", b =>
                 {
                     b.HasOne("BeatStore.API.Entities.Track", "Track")
                         .WithMany()

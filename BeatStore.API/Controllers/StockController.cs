@@ -10,6 +10,7 @@ using BeatStore.API.Entities;
 using BeatStore.API.UseCases.Stock;
 using BeatStore.API.DTO.Responses;
 using BeatStore.API.DTO.Requests.Stock;
+using System.Net;
 
 namespace BeatStore.API.Controllers
 {
@@ -18,10 +19,10 @@ namespace BeatStore.API.Controllers
     public class StockController : ControllerBase
     {
         #region UseCases
-        GetStockUseCase _getStockUseCase;
-        ListAllStockUseCase _listAllStockUseCase;
-        CreateStockUseCase _createStockUseCase;
-        UpdateStockUseCase _updateStockUseCase;
+        private readonly GetStockUseCase _getStockUseCase;
+        private readonly ListAllStockUseCase _listAllStockUseCase;
+        private readonly CreateStockUseCase _createStockUseCase;
+        private readonly UpdateStockUseCase _updateStockUseCase;
         #endregion
 
         public StockController(GetStockUseCase getStockUseCase, ListAllStockUseCase listAllStockUseCase, CreateStockUseCase createStockUseCase, UpdateStockUseCase updateStockUseCase)
@@ -37,10 +38,8 @@ namespace BeatStore.API.Controllers
         [HttpGet("stock")]
         public async Task<ActionResult> GetAllStock()
         {
-            var result = await _listAllStockUseCase.Handle();
-            if (result)
-                return _listAllStockUseCase.OutputPort?.Data;
-            return new StandardResponse("OutputPort is empty", 500).Data;
+            await _listAllStockUseCase.Handle();
+            return _listAllStockUseCase.OutputPort.GetResult();
         }
         #endregion
 
@@ -54,12 +53,11 @@ namespace BeatStore.API.Controllers
             }
             var isGUIDValid = Guid.TryParse(stockId, out _);
             if (!isGUIDValid)
-                return new StandardResponse("Wrong Id format", 400).Data;
+                return new StandardResponse("Wrong Id format", HttpStatusCode.BadRequest)
+                    .GetResult();
 
-            var result = await _getStockUseCase.Handle(stockId);
-            if (result)
-                return _getStockUseCase.OutputPort?.Data;
-            return new StandardResponse("OutputPort is empty", 500).Data;
+            await _getStockUseCase.Handle(stockId);
+            return _getStockUseCase.OutputPort.GetResult();
         }
         #endregion
 
@@ -78,10 +76,8 @@ namespace BeatStore.API.Controllers
                 IsUnlimited= stockModel.IsUnlimited,
                 IsPublished= stockModel.IsPublished
             };
-            var result = await _createStockUseCase.Handle(stock);
-            if (result)
-                return _createStockUseCase.OutputPort?.Data;
-            return new StandardResponse("OutputPort is empty", 500).Data;
+            await _createStockUseCase.Handle(stock);
+            return _createStockUseCase.OutputPort.GetResult();
         }
         #endregion
 
@@ -102,10 +98,8 @@ namespace BeatStore.API.Controllers
             if (stockModel.IsPublished != null)
                 stock.IsPublished = stockModel.IsPublished.Value;
 
-            var result = await _updateStockUseCase.Handle(stock);
-            if (result)
-                return _updateStockUseCase.OutputPort?.Data;
-            return new StandardResponse("OutputPort is empty", 500).Data;
+            await _updateStockUseCase.Handle(stock);
+            return _updateStockUseCase.OutputPort.GetResult();
         }
         #endregion
     }

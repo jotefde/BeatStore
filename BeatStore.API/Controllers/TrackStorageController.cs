@@ -21,10 +21,10 @@ namespace BeatStore.API.Controllers
             _createTrackObjectsUseCase = createTrackObjectsUseCase;
         }
 
-        #region POST /track-storage/upload-package
-        [HttpPost("upload-package")]
+        #region POST /track-storage/upload-all
+        [HttpPost("upload-all")]
         [RequestSizeLimit(200_000_000)]
-        public async Task<ActionResult> UploadPackage([FromForm] UploadPackageRequest request)
+        public async Task<ActionResult> UploadAll([FromForm] UploadPackageRequest request)
         {
             if (!ModelState.IsValid)
             {

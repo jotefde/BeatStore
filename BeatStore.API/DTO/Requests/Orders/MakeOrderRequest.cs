@@ -1,4 +1,5 @@
-﻿using BeatStore.API.Helpers.Enums;
+﻿using BeatStore.API.Extensions.RequestAttributes;
+using BeatStore.API.Helpers.Enums;
 using BeatStore.API.Helpers.Validation;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel;
@@ -31,6 +32,7 @@ namespace BeatStore.API.DTO.Requests.Orders
         public string CustomerLastName { get; set; }
 
         [Required(ErrorMessage = "Item list cannot be empty")]
+        [GUID(true)]
         public IEnumerable<string> Items { get; set; }
     }
 }

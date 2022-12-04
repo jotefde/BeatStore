@@ -7,8 +7,7 @@ namespace BeatStore.API.DTO.Requests.TrackStorage
     public class UploadPackageRequest
     {
         [Required]
-        [DataType(DataType.Text)]
-        [StringLength(36, MinimumLength = 36)]
+        [GUID]
         public string TrackId { get; set; }
         [Required]
         [DataType(DataType.Upload)]

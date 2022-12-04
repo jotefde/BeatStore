@@ -51,10 +51,6 @@ namespace BeatStore.API.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var isGUIDValid = Guid.TryParse(stockId, out _);
-            if (!isGUIDValid)
-                return new StandardResponse("Wrong Id format", HttpStatusCode.BadRequest)
-                    .GetResult();
 
             await _getStockUseCase.Handle(stockId);
             return _getStockUseCase.OutputPort.GetResult();

@@ -37,18 +37,6 @@ namespace BeatStore.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (orderModel.Items?.Count() < 1)
-                return new StandardResponse("Item list is empty", HttpStatusCode.BadRequest)
-                    .GetResult();
-
-            foreach (var trackId in orderModel.Items)
-            {
-                var isGUIDValid = Guid.TryParse(trackId, out _);
-                if (!isGUIDValid)
-                    return new StandardResponse("Wrong Id format", HttpStatusCode.BadRequest)
-                        .GetResult();
-            }
-
             var order = new OrderDetails 
             {
                 Description= orderModel.Description,

@@ -14,6 +14,7 @@ using BeatStore.API.DTO.Responses;
 using BeatStore.API.DTO.Requests.Tracks;
 using BeatStore.API.DTO.Requests.Stock;
 using System.Net;
+using BeatStore.API.Extensions.RequestAttributes;
 
 namespace BeatStore.API.Controllers
 {
@@ -46,16 +47,12 @@ namespace BeatStore.API.Controllers
 
         #region GET /tracks/:id
         [HttpGet("{trackId}")]
-        public async Task<ActionResult> GetTrack([FromRoute] string trackId)
+        public async Task<ActionResult> GetTrack([FromRoute] [GUID] string trackId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var isGUIDValid = Guid.TryParse(trackId, out _);
-            if (!isGUIDValid)
-                return new StandardResponse("Wrong track id format.", HttpStatusCode.NotFound)
-                    .GetResult();
 
             await _getTrackUseCase.Handle(trackId);
             return _getTrackUseCase.OutputPort.GetResult();

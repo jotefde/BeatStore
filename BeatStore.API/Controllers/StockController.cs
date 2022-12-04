@@ -11,6 +11,7 @@ using BeatStore.API.UseCases.Stock;
 using BeatStore.API.DTO.Responses;
 using BeatStore.API.DTO.Requests.Stock;
 using System.Net;
+using BeatStore.API.Extensions.RequestAttributes;
 
 namespace BeatStore.API.Controllers
 {
@@ -45,7 +46,7 @@ namespace BeatStore.API.Controllers
 
         #region GET /stock/:id
         [HttpGet("{stockId}")]
-        public async Task<ActionResult> GetStock([FromRoute] string stockId)
+        public async Task<ActionResult> GetStock([FromRoute] [GUID] string stockId)
         {
             if (!ModelState.IsValid)
             {

@@ -1,9 +1,11 @@
 ﻿using BeatStore.API.Context;
 using BeatStore.API.DTO.Responses;
 using BeatStore.API.Entities;
+using BeatStore.API.Extensions;
 using BeatStore.API.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Linq.Expressions;
 using System.Net;
 
 namespace BeatStore.API.Repositories
@@ -21,11 +23,11 @@ namespace BeatStore.API.Repositories
         {
             try
             {
-                var results = await _dbContext.Stock
+                var list = await _dbContext.Stock
                     .Include(s => s.Track)
-                    .Where(s => s.PublishTime <= DateTime.UtcNow || !publishedOnly)
                     .ToListAsync();
-                return new ListResponse<Stock>(results);
+                var availableStock = list.Where(s => s.IsAvailable() || !publishedOnly);
+                return new ListResponse<Stock>(availableStock);
             }
             catch (Exception e)
             {
@@ -38,7 +40,9 @@ namespace BeatStore.API.Repositories
         {
             try
             {
-                var results = await _dbContext.Stock.Where(s => s.Id == stockId).FirstAsync();
+                var results = await _dbContext.Stock
+                    .Include(s => s.Track)
+                    .FirstOrDefaultAsync(s => s.Id.Equals(stockId));
                 return new ValueResponse<Stock>(results);
             }
             catch(Exception e)

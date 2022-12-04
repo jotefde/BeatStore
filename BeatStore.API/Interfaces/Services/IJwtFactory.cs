@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BeatStore.API.Interfaces.Factories
+namespace BeatStore.API.Interfaces.Services
 {
-    public interface IJwtFactory
+    public interface IJwtService
     {
         Task<Token> GenerateEncodedToken(string id, string email, IEnumerable<string> roles);
     }

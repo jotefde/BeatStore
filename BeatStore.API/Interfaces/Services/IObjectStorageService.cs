@@ -5,9 +5,9 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BeatStore.API.Interfaces.Factories
+namespace BeatStore.API.Interfaces.Services
 {
-    public interface IObjectStorageFactory
+    public interface IObjectStorageService
     {
         public MinioClient GetClient();
         public Task<string> AddCoverImage(string fileName, Stream fileStream);

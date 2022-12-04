@@ -1,5 +1,5 @@
 ﻿using BeatStore.API.DTO;
-using BeatStore.API.Interfaces.Factories;
+using BeatStore.API.Interfaces.Services;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -10,13 +10,13 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BeatStore.API.Factories
+namespace BeatStore.API.Services
 {
-    public class JwtFactory : IJwtFactory
+    public class JwtService : IJwtService
     {
         private readonly JwtIssuerOptions _jwtOptions;
 
-        public JwtFactory(IOptions<JwtIssuerOptions> jwtOptions)
+        public JwtService(IOptions<JwtIssuerOptions> jwtOptions)
         {
             _jwtOptions = jwtOptions.Value;
             ThrowIfInvalidOptions(_jwtOptions);

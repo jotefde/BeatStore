@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
-using BeatStore.API.Interfaces.Factories;
+using BeatStore.API.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,15 +9,15 @@ using Minio;
 using BeatStore.API.DTO;
 using System.Diagnostics;
 
-namespace BeatStore.API.Factories
+namespace BeatStore.API.Services
 {
-    public class MinioObjectStorageFactory : IObjectStorageFactory
+    public class MinioObjectStorage : IObjectStorageService
     {
         private readonly MinioClient _minioClient;
         private readonly ObjectStorageOptions _minioConnectionOptions;
 
         [Obsolete]
-        public MinioObjectStorageFactory(IOptions<ObjectStorageOptions> options)
+        public MinioObjectStorage(IOptions<ObjectStorageOptions> options)
         {
             _minioConnectionOptions = options.Value;
             _minioClient = new MinioClient()

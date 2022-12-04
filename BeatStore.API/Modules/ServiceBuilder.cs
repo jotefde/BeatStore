@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using BeatStore.API.Context;
-using BeatStore.API.Factories;
-using BeatStore.API.Interfaces.Factories;
+using BeatStore.API.Services;
+using BeatStore.API.Interfaces.Services;
 using BeatStore.API.Interfaces.Repositories;
 using BeatStore.API.Repositories;
 
@@ -11,8 +11,8 @@ namespace BeatStore.API.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<JwtFactory>().As<IJwtFactory>().SingleInstance();
-            builder.RegisterType<MinioObjectStorageFactory>().As<IObjectStorageFactory>().SingleInstance();
+            builder.RegisterType<JwtService>().As<IJwtService>().SingleInstance();
+            builder.RegisterType<MinioObjectStorage>().As<IObjectStorageService>().SingleInstance();
         }
     }
 }

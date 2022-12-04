@@ -1,7 +1,7 @@
 ﻿using BeatStore.API.DTO.Responses;
 using BeatStore.API.Entities;
 using BeatStore.API.Helpers;
-using BeatStore.API.Interfaces.Factories;
+using BeatStore.API.Interfaces.Services;
 using BeatStore.API.Interfaces.Repositories;
 using System;
 using System.IO;
@@ -12,8 +12,8 @@ namespace BeatStore.API.UseCases.Tracks
     public class CreateTrackUseCase : ABaseUseCase
     {
         private readonly ITrackRepository _trackRepository;
-        private readonly IObjectStorageFactory _minioOS;
-        public CreateTrackUseCase(ITrackRepository trackRepository, IObjectStorageFactory minioOS)
+        private readonly IObjectStorageService _minioOS;
+        public CreateTrackUseCase(ITrackRepository trackRepository, IObjectStorageService minioOS)
         {
             _trackRepository = trackRepository;
             _minioOS = minioOS;

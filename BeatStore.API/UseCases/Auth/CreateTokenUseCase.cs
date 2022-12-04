@@ -1,7 +1,7 @@
 ﻿using BeatStore.API.DTO;
 using BeatStore.API.DTO.Requests.Auth;
 using BeatStore.API.DTO.Responses;
-using BeatStore.API.Interfaces.Factories;
+using BeatStore.API.Interfaces.Services;
 using BeatStore.API.Interfaces.Repositories;
 using Minio;
 using System.Net;
@@ -12,9 +12,9 @@ namespace BeatStore.API.UseCases.Auth
     {
 
         private readonly IUserRepository _userRepository;
-        private readonly IJwtFactory _jwtFactory;
+        private readonly IJwtService _jwtFactory;
 
-        public CreateTokenUseCase(IUserRepository userRepository, IJwtFactory jwtFactory)
+        public CreateTokenUseCase(IUserRepository userRepository, IJwtService jwtFactory)
         {
             _userRepository = userRepository;
             _jwtFactory = jwtFactory;

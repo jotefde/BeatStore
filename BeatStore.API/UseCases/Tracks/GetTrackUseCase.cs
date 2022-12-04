@@ -1,6 +1,6 @@
 ﻿using BeatStore.API.DTO.Responses;
 using BeatStore.API.Entities;
-using BeatStore.API.Interfaces.Factories;
+using BeatStore.API.Interfaces.Services;
 using BeatStore.API.Interfaces.Repositories;
 using System.Diagnostics;
 

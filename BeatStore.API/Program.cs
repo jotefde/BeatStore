@@ -2,6 +2,7 @@ using Autofac.Extensions.DependencyInjection;
 using BeatStore.API.Context;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace BeatStore.API
 {

@@ -13,6 +13,8 @@ namespace BeatStore.API.Modules
         {
             builder.RegisterType<JwtService>().As<IJwtService>().SingleInstance();
             builder.RegisterType<MinioObjectStorage>().As<IObjectStorageService>().SingleInstance();
+            builder.RegisterType<PayU>().As<IPaymentService>().SingleInstance();
+            builder.RegisterType<MailingService>().As<IMailingService>().SingleInstance();
         }
     }
 }

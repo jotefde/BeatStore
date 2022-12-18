@@ -6,9 +6,9 @@ namespace BeatStore.API.Entities
     {
         public string PaymentId { get; set; }
         public string Description { get; set; }
-        public Currency CurrencyCode { get; set; } = Currency.PLN;
-        public PaymentMethod PayMethod { get; set; } = PaymentMethod.PBL;
-        public OrderStatus Status { get; set; } = OrderStatus.PENDING;
+        public Currency? CurrencyCode { get; set; } = Currency.PLN;
+        public PaymentMethod? PayMethod { get; set; } = null;
+        public OrderStatus? Status { get; set; } = OrderStatus.PENDING;
         public string CustomerIP { get; set; }
         public string CustomerEmail { get; set; }
         public string CustomerPhone { get; set; }

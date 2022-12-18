@@ -4,6 +4,7 @@ using BeatStore.API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeatStore.API.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20221205190526_NullablePayMethod")]
+    partial class NullablePayMethod
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,33 +87,6 @@ namespace BeatStore.API.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("BeatStore.API.Entities.OrderAccess", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ModifiedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("OrderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderAccesses");
                 });
 
             modelBuilder.Entity("BeatStore.API.Entities.OrderDetails", b =>
@@ -296,7 +271,7 @@ namespace BeatStore.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id")
-                        .HasName("PK_TrackAccessId");
+                        .HasName("PK_TrackObjectsId");
 
                     b.HasIndex("TrackId");
 
@@ -434,17 +409,6 @@ namespace BeatStore.API.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("BeatStore.API.Entities.OrderAccess", b =>
-                {
-                    b.HasOne("BeatStore.API.Entities.OrderDetails", "OrderDetails")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("BeatStore.API.Entities.OrderItem", b =>

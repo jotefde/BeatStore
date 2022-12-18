@@ -110,24 +110,23 @@ namespace BeatStore.API
                     });
             });*/
 
-            var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
-            var objectStorageOptions = Configuration.GetSection(nameof(ObjectStorageOptions));
-
-            // Configure JwtIssuerOptions
-            services.Configure<JwtIssuerOptions>(options =>
-            {
-                options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
-                options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
-                options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
-            });
-
             // Configure ObjectStorageOptions
+            var objectStorageOptions = Configuration.GetSection(nameof(ObjectStorageOptions));
             services.Configure<ObjectStorageOptions>(options =>
             {
                 options.ConnectionString = objectStorageOptions[nameof(ObjectStorageOptions.ConnectionString)];
                 options.ObjectStorageBaseUrl = objectStorageOptions[nameof(ObjectStorageOptions.ObjectStorageBaseUrl)];
                 options.AccessKey = objectStorageOptions[nameof(ObjectStorageOptions.AccessKey)];
                 options.SecretKey = objectStorageOptions[nameof(ObjectStorageOptions.SecretKey)];
+            });
+
+            // Configure JwtIssuerOptions
+            var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
+            services.Configure<JwtIssuerOptions>(options =>
+            {
+                options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
+                options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
+                options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
             });
 
             var tokenValidationParameters = new TokenValidationParameters
@@ -156,6 +155,26 @@ namespace BeatStore.API
                 configureOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
                 configureOptions.TokenValidationParameters = tokenValidationParameters;
                 configureOptions.SaveToken = true;
+            });
+
+            // Configure PayU API options
+            var paymentAPIOptions = Configuration.GetSection(nameof(PaymentAPIOptions));
+            services.Configure<PaymentAPIOptions>(options =>
+            {
+                options.client_id = paymentAPIOptions[nameof(PaymentAPIOptions.client_id)];
+                options.client_secret = paymentAPIOptions[nameof(PaymentAPIOptions.client_secret)];
+                options.notifyUrl = paymentAPIOptions[nameof(PaymentAPIOptions.notifyUrl)];
+            });
+
+            // Configure Mailing service options
+            var mailingOptions = Configuration.GetSection(nameof(MailingOptions));
+            services.Configure<MailingOptions>(options =>
+            {
+                options.Host = mailingOptions[nameof(MailingOptions.Host)];
+                options.Port = Convert.ToInt32(mailingOptions[nameof(MailingOptions.Port)]);
+                options.Email = mailingOptions[nameof(MailingOptions.Email)];
+                options.DisplayName = mailingOptions[nameof(MailingOptions.DisplayName)];
+                options.Password = mailingOptions[nameof(MailingOptions.Password)];
             });
 
             // add identity

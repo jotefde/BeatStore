@@ -14,6 +14,7 @@ namespace BeatStore.API.Context
         public DbSet<Stock>? Stock { get; set; }
         public DbSet<OrderDetails>? Orders { get; set; }
         public DbSet<OrderItem>? OrderItems { get; set; }
+        public DbSet<OrderAccess>? OrderAccesses { get; set; }
         public DbSet<TrackObjects>? TrackStorage { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,6 +40,10 @@ namespace BeatStore.API.Context
             modelBuilder.Entity<TrackObjects>()
                 .HasKey(e => e.Id)
                 .HasName("PK_TrackObjectsId");
+
+            modelBuilder.Entity<TrackObjects>()
+                .HasKey(e => e.Id)
+                .HasName("PK_TrackAccessId");
         }
 
         public override int SaveChanges()

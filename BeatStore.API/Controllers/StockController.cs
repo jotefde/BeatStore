@@ -36,7 +36,7 @@ namespace BeatStore.API.Controllers
 
 
         #region GET /stock
-        [HttpGet("stock")]
+        [HttpGet]
         public async Task<ActionResult> GetAllStock()
         {
             await _listAllStockUseCase.Handle();

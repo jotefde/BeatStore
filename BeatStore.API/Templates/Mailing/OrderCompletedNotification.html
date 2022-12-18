@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+        @font-face {
+            font-family: 'Pricedow';
+            font-style: normal;
+            font-weight: 300;
+            font-display: swap;
+            src: url(https://localhost:44491/static/media/pricedow.8d4c7ebe3fa9263f0d9b.ttf) format("truetype"); }
+    </style>
+    <style>
+        body {
+            background: #160d1c;
+            color: white;
+            width: 100%;
+            height: 100%;
+        }
+        #MainRow {
+            width: 100%;
+        }
+        .col-8 {
+            height: 100vh;
+            background: #20132a;
+            padding: 25px;
+        }
+        #Title {
+            font-family: 'Pricedow',serif;
+            text-align: center;
+            margin: 10px 0 50px 0;
+        }
+
+        a {
+            color: #9b6cbc;
+        }
+
+        a:hover {
+            color: white;
+        }
+
+        p {
+            margin: 5px 0;
+        }
+
+        .orderLink {
+            display: block;
+            background: #311d3f;
+            padding: 5px 15px;
+            margin: 15px 0;
+        }
+
+        .alert {
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="MainRow" class="row">
+        <div class="col-8 offset-2">
+            <h1 id="Title">prod. olzoo</h1>
+            <p>Hello {0}!</p>
+            <p>Your order number <b>{1}</b> has been paid.</p>
+            <p>The products you have purchased will be available for 3 days at:</p>
+            <a class="orderLink" href="https://prodolzoo.store/order/show/{2}">prodolzoo.store/order/show/{2}</a>
+            <p>If you have any questions, we are here to help:</p>
+            <a href="maito:orders@prodolzoo.store">orders@prodolzoo.store</a>
+            <br/>
+            <br/>
+            <div>
+                <p>We wish you success in creating hits,<br/>
+                prod. olzoo</p>
+            </div>
+
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <p class="alert">Wiadomość wygenerowana automatycznie, prosimy na nią nie odpowiadać!</p>
+        </div>
+    </div>
+</body>
+</html>

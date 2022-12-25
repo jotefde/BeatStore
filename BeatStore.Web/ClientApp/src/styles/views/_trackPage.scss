@@ -1,5 +1,133 @@
 #TrackInfo {
+  @include desktop {
+    width: 50vw;
+    min-width: 866px;
+  }
+
   .trackMainContent {
     background: $themeColor;
+    text-align: center;
+    padding: 15px 5px;
+    box-shadow: $floatingBoxShadow;
+
+    & > div:last-child {
+      position: relative;
+      padding-bottom: 80px;
+    }
+
+    &__imageWrap {
+      img {
+        width: 100%;
+      }
+    }
+
+    &__name {
+      color: $mainFontColor;
+      margin: 0px 0 25px;
+    }
+
+    &__price {
+      display: block;
+      width: 60%;
+      background: $midThemeColor;
+      border: 2px solid $darkenThemeColor;
+      border-radius: 10px;
+      padding: 10px 15px;
+      font-size: 1.1em;
+      color: $mainFontColor;
+      margin: 15px auto 5px;
+      text-align: right;
+      position: relative;
+      overflow: hidden;
+
+      .spanTitle {
+        background: $darkenThemeColor;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 70px;
+        height: 100%;
+        padding: 10px 15px 7px;
+      }
+    }
+
+    &__status {
+      color: rgb(0, 190, 0);
+      background: $midThemeColor;
+      border-radius: 10px;
+      display: block;
+      width: 60%;
+      text-align: right;
+      padding: 10px 15px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid $darkenThemeColor;
+
+      svg {
+        background: $darkenThemeColor;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 70px;
+        height: 100%;
+        padding: 7px 0;
+      }
+    }
+
+    &__description {
+      color: $mainFontColor;
+      margin-top: 15px;
+
+      .sectionTitle {
+        text-align: left;
+        color: rgba($mainFontColor, 0.5);
+      }
+    }
+
+    &__buttons {
+      padding: 0 30px 0 0;
+      margin: 0;
+      position: absolute;
+      bottom: 3px;
+
+      .button {
+        & > span {
+          display: none;
+
+          @include tablet {
+            display: inline;
+          }
+        }
+      }
+    }
+  }
+
+  .trackDetails {
+    margin-top: 20px;
+    color: $mainFontColor;
+    background: $themeColor;
+    box-shadow: $floatingBoxShadow;
+    padding: 15px;
+
+    h5 {
+      margin-bottom: 30px;
+    }
+
+    &__sample {
+    }
+
+    &__trackout {
+      ol {
+        list-style-type: decimal;
+        background: $midThemeColor;
+        padding: 10px 35px;
+        li {
+          padding: 5px 0;
+        }
+      }
+    }
   }
 }

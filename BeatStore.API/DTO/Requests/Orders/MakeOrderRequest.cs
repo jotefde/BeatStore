@@ -10,12 +10,9 @@ namespace BeatStore.API.DTO.Requests.Orders
 {
     public class MakeOrderRequest
     {
-        public string Description { get; set; } = String.Empty;
+        public string Description { get; set; }
         [Required(ErrorMessage ="Currency code cannot be empty")]
         public Currency CurrencyCode { get; set; }
-        [Required(ErrorMessage = "Payment method cannot be empty")]
-        //[PaymentMethodValidator]
-        public PaymentMethod PayMethod { get; set; }
         [Required(ErrorMessage ="Email cannot be empty")]
         [DataType(DataType.EmailAddress)]
         public string CustomerEmail { get; set; }

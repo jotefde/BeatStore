@@ -25,6 +25,8 @@ namespace BeatStore.API.Repositories
             try
             {
                 order.Status = Helpers.Enums.OrderStatus.PENDING;
+                if(string.IsNullOrEmpty(order.PaymentId))
+                    order.PaymentId = "";
                 /*var existsTrackCount = await _dbContext.Stock.CountAsync(
                     s => trackIds.Contains(s.Track.Id) && s.IsAvailable());
                 if(existsTrackCount != trackIds.Count())

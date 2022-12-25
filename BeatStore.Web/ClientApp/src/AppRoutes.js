@@ -1,7 +1,8 @@
 import { HomePage } from "./pages/HomePage";
 import { ContactPage } from "./pages/ContactPage";
 import { AboutUsPage } from "./pages/AboutUsPage";
-import { ShoppingCartPage } from "./pages/ShoppingCartPage";
+import ShoppingCartPage from "./pages/ShoppingCartPage";
+import TrackPage from "./pages/TrackPage";
 
 const AppRoutes = [
   {
@@ -19,6 +20,10 @@ const AppRoutes = [
   {
     path: '/shopping-cart',
     element: <ShoppingCartPage />
+  },
+  {
+      path: '/product/:slug',
+      element: <TrackPage />
   }
 ];
 

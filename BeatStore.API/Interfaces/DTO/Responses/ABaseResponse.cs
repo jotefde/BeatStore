@@ -11,7 +11,7 @@ namespace BeatStore.API.Interfaces.DTO.Responses
         public HttpStatusCode StatusCode { get; set; } = HttpStatusCode.OK;
         public bool Success { get; set; } = false;
 
-        public abstract ContentResult GetResult();
+        public abstract ActionResult GetResult();
         public abstract ABaseResponse<T> SetData(T data);
     }
 }

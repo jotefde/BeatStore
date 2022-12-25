@@ -1,37 +1,13 @@
 ﻿#ShoppingCartPreview {
-    position: absolute;
-    right: 20px;
-    top: 60px;
-    min-width: 350px;
-    max-width: 500px;
     background: $darkenThemeColor;
     border: 2px solid $themeColor;
     border-radius: 5px;
-    z-index: 9;
     box-shadow: black 0px 0px 3px;
-
-    @include full-display {
-        right: 50px;
-        top: 90px;
-    }
 }
 
 .shoppingCartPreview {
-    display: none;
-
-    &--visible {
-        @include tablet-landscape {
-            display: block;
-        }
-    }
-
     .title {
-        display: block;
-        width: 100%;
-        padding: 5px 20px 10px;
-        background: $themeColor;
-        color: $mainFontColor;
-        text-align: center;
+        display: none;
     }
 
     .content {
@@ -46,8 +22,8 @@
         .cartPreviewList {
             border-collapse: collapse;
             width: 100%;
-            display: block;
-            max-height: 200px;
+            display: table;
+            max-height: initial;
 
             @include Scrollable();
 
@@ -62,6 +38,10 @@
 
                 td {
                     padding: 5px;
+                    cursor: pointer;
+                    &:nth-child(2) {
+                        width: 1px;
+                    }
                 }
             }
 
@@ -82,12 +62,57 @@
         }
 
         .buttons {
-            .button {
-                height: 35px;
-                line-height: 35px;
-                padding: 0 20px;
-                margin: 10px 10px 0;
+            display: none;
+        }
+    }
+
+    &--isMinimal {
+        display: none;
+        position: absolute;
+        right: 20px;
+        top: 60px;
+        min-width: 350px;
+        max-width: 500px;
+        z-index: 9;
+
+        @include full-display {
+            right: 50px;
+            top: 90px;
+        }
+
+        .title {
+            display: block;
+            width: 100%;
+            padding: 5px 20px 10px;
+            background: $themeColor;
+            color: $mainFontColor;
+            text-align: center;
+        }
+
+        .content {
+            .cartPreviewList {
+                display: block;
+                max-height: 200px;
+                td:first-child > div > span {
+                    display: none;
+                }
             }
+
+            .buttons {
+                display: block;
+                .button {
+                    height: 35px;
+                    line-height: 35px;
+                    padding: 0 20px;
+                    margin: 10px 10px 0;
+                }
+            }
+        }
+    }
+
+    &--visible {
+        @include tablet-landscape {
+            display: block;
         }
     }
 }

@@ -1,24 +1,20 @@
 import axios from 'axios';
 
 export const ACTION_TYPE = {
-    LIST_TRACKS_SUCCESS: 'LIST_TRACKS_SUCCESS',
-    LIST_TRACKS_REQUEST: 'LIST_TRACKS_REQUEST',
-    LIST_TRACKS_FAILURE: 'LIST_TRACKS_FAILURE',
+    GET_STOCK_SUCCESS: 'GET_STOCK_SUCCESS',
+    GET_STOCK_REQUEST: 'GET_STOCK_REQUEST',
+    GET_STOCK_FAILURE: 'GET_STOCK_FAILURE',
 
-    LIST_CATEGORIES_SUCCESS: 'LIST_CATEGORIES_SUCCESS',
-    LIST_CATEGORIES_REQUEST: 'LIST_CATEGORIES_REQUEST',
-    LIST_CATEGORIES_FAILURE: 'LIST_CATEGORIES_FAILURE',
+    LIST_STOCK_SUCCESS: 'LIST_STOCK_SUCCESS',
+    LIST_STOCK_REQUEST: 'LIST_STOCK_REQUEST',
+    LIST_STOCK_FAILURE: 'LIST_STOCK_FAILURE',
 
-    SEND_MESSAGE_REQUEST: 'SEND_MESSAGE_REQUEST',
-    SEND_MESSAGE_SUCCESS: 'SEND_MESSAGE_SUCCESS',
-    SEND_MESSAGE_FAILURE: 'SEND_MESSAGE_FAILURE',
-
-    FETCH_SEARCH_REQUEST: 'FETCH_SEARCH_REQUEST',
-    FETCH_SEARCH_SUCCESS: 'FETCH_SEARCH_SUCCESS',
-    FETCH_SEARCH_FAILURE: 'FETCH_SEARCH_FAILURE'
+    POST_NEWORDER_SUCCESS: 'POST_NEWORDER_SUCCESS',
+    POST_NEWORDER_REQUEST: 'POST_NEWORDER_REQUEST',
+    POST_NEWORDER_FAILURE: 'POST_NEWORDER_FAILURE',
 };
 
-const API_URL = 'http://localhost';
+const API_URL = 'http://localhost:5225';
 const getRequest = (route) => axios.get(`${API_URL}/${route}`);
 const postRequest = (route, payload) => axios.post(`${API_URL}/${route}`, payload);
 const formRequest = (route, fields) => {
@@ -50,6 +46,60 @@ export const sendContactMessage = (fields) => dispatch => {
         })
 }
 
+export const getAllStock = dispatch => {
+    dispatch({ type: ACTION_TYPE.LIST_STOCK_REQUEST });
+    return getRequest('stock')
+        .then(({ data }) => {
+            dispatch({
+                type: ACTION_TYPE.LIST_STOCK_SUCCESS,
+                payload: data
+            });
+        })
+        .catch(({ response }) => {
+            dispatch({
+                type: ACTION_TYPE.LIST_STOCK_FAILURE,
+                payload: response?.data
+            });
+        });
+};
+
+export const getStock = (slug) => dispatch => {
+    dispatch({ type: ACTION_TYPE.GET_STOCK_REQUEST });
+    return getRequest(`stock/slug/${slug}`)
+        .then(({ data }) => {
+            dispatch({
+                type: ACTION_TYPE.GET_STOCK_SUCCESS,
+                payload: data
+            });
+        })
+        .catch(({ response }) => {
+            dispatch({
+                type: ACTION_TYPE.GET_STOCK_FAILURE,
+                payload: response?.data
+            });
+        });
+};
+
+export const sendNewOrder = (values) => dispatch => {
+    dispatch({ type: ACTION_TYPE.POST_NEWORDER_REQUEST });
+    return postRequest(`orders`, values)
+        .then(({ data }) => {
+            dispatch({
+                type: ACTION_TYPE.POST_NEWORDER_SUCCESS,
+                payload: data
+            });
+        })
+        .catch(({ response }) => {
+            dispatch({
+                type: ACTION_TYPE.POST_NEWORDER_FAILURE,
+                payload: response?.data
+            });
+            //.then(() => dispatch({type: ACTION_TYPE.POST_NEWORDER_REQUEST}));
+        });
+};
+
+export const resetNewOrderResponse = dispatch => dispatch({ type: ACTION_TYPE.POST_NEWORDER_REQUEST });
+
 /*
 
 export const getCategories = dispatch => {
@@ -68,23 +118,6 @@ export const getCategories = dispatch => {
             });
         })
 }
-
-export const getTracks = dispatch => {
-    dispatch({ type: ACTION_TYPE.LIST_TRACKS_REQUEST });
-    return getRequest('track')
-        .then(({ data }) => {
-            dispatch({
-                type: ACTION_TYPE.LIST_TRACKS_SUCCESS,
-                payload: data
-            });
-        })
-        .catch(({ response }) => {
-            dispatch({
-                type: ACTION_TYPE.LIST_TRACKS_FAILURE,
-                payload: response?.data
-            });
-        });
-};
 
 export const getSearchResult = (query) => dispatch => {
     dispatch({ type: ACTION_TYPE.FETCH_SEARCH_REQUEST });

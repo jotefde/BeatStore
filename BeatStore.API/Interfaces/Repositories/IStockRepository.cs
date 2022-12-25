@@ -10,6 +10,7 @@ namespace BeatStore.API.Interfaces.Repositories
     {
         Task<ListResponse<Stock>> GetAll(bool publishedOnly = true);
         Task<ValueResponse<Stock>> GetById(string stockId);
+        Task<ValueResponse<Stock>> GetBySlug(string trackSlug);
         Task<StandardResponse> Create(Stock stock);
         Task<ValueResponse<Stock>> Update(Stock stock);
         Task<StandardResponse> Delete(string stockId);

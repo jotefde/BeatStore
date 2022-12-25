@@ -6,5 +6,6 @@ namespace BeatStore.API.Interfaces.Repositories
     public interface ITrackStorageRepository
     {
         Task<StandardResponse> Create(TrackObjects to);
+        Task<ValueResponse<TrackObjects>> GetByTrackId(string id);
     }
 }

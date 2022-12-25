@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Minio;
 using BeatStore.API.DTO;
 using System.Diagnostics;
+using System.Security.AccessControl;
 
 namespace BeatStore.API.Services
 {
@@ -89,6 +90,26 @@ namespace BeatStore.API.Services
             {
                 Trace.WriteLine(ex.Message);
                 return false; 
+            }
+        }
+
+        public async Task<Stream> GetTrackObject(string trackId, string fileName)
+        {
+            try
+            {
+                var memStream = new MemoryStream();
+                await _minioClient.GetObjectAsync("tracks", $"{trackId}/{fileName}", (stream) => {
+                    stream.CopyTo(memStream);
+                    memStream.Flush();
+                    memStream.Position = 0;
+                    stream.Close();
+                });
+                return memStream;
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
+                return null;
             }
         }
     }

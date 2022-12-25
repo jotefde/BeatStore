@@ -14,5 +14,6 @@ namespace BeatStore.API.Interfaces.Services
         public Task<bool> DeleteCoverImage(string objectName);
         public Task<string> GetCoverImage(string objectName);
         public Task<bool> AddTrackObject(string trackId, string fileName, Stream fileStream);
+        public Task<Stream> GetTrackObject(string trackId, string fileName);
     }
 }

@@ -4,6 +4,6 @@ namespace BeatStore.API.Interfaces.DTO.Responses
 {
     public interface IBaseResponse
     {
-        ContentResult GetResult();
+        ActionResult GetResult();
     }
 }

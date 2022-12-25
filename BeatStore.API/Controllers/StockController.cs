@@ -20,21 +20,35 @@ namespace BeatStore.API.Controllers
     public class StockController : ControllerBase
     {
         #region UseCases
-        private readonly GetStockUseCase _getStockUseCase;
+        private readonly GetStockByIdUseCase _getStockByIdUseCase;
+        private readonly GetStockBySlugUseCase _getStockBySlugUseCase;
         private readonly ListAllStockUseCase _listAllStockUseCase;
         private readonly CreateStockUseCase _createStockUseCase;
         private readonly UpdateStockUseCase _updateStockUseCase;
         #endregion
 
-        public StockController(GetStockUseCase getStockUseCase, ListAllStockUseCase listAllStockUseCase, CreateStockUseCase createStockUseCase, UpdateStockUseCase updateStockUseCase)
+        public StockController(GetStockByIdUseCase getStockByIdUseCase, ListAllStockUseCase listAllStockUseCase, CreateStockUseCase createStockUseCase, UpdateStockUseCase updateStockUseCase, GetStockBySlugUseCase getStockBySlugUseCase)
         {
-            _getStockUseCase = getStockUseCase;
+            _getStockByIdUseCase = getStockByIdUseCase;
             _listAllStockUseCase = listAllStockUseCase;
             _createStockUseCase = createStockUseCase;
             _updateStockUseCase = updateStockUseCase;
+            _getStockBySlugUseCase = getStockBySlugUseCase;
         }
 
+        #region GET /stock/id/:id
+        [HttpGet("id/{stockId}")]
+        public async Task<ActionResult> GetStockById([FromRoute] [GUID] string stockId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            await _getStockByIdUseCase.Handle(stockId);
+            return _getStockByIdUseCase.OutputPort.GetResult();
+        }
+        #endregion
         #region GET /stock
         [HttpGet]
         public async Task<ActionResult> GetAllStock()
@@ -44,17 +58,17 @@ namespace BeatStore.API.Controllers
         }
         #endregion
 
-        #region GET /stock/:id
-        [HttpGet("{stockId}")]
-        public async Task<ActionResult> GetStock([FromRoute] [GUID] string stockId)
+        #region GET /stock/slug/:slug
+        [HttpGet("slug/{trackSlug}")]
+        public async Task<ActionResult> GetStockBySlug([FromRoute] string trackSlug)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await _getStockUseCase.Handle(stockId);
-            return _getStockUseCase.OutputPort.GetResult();
+            await _getStockBySlugUseCase.Handle(trackSlug);
+            return _getStockBySlugUseCase.OutputPort.GetResult();
         }
         #endregion
 

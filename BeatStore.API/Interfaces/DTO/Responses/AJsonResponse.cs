@@ -32,6 +32,8 @@ namespace BeatStore.API.Interfaces.DTO.Responses
         public override ABaseResponse<T> SetData(T data)
         {
             Data = data;
+            if(Data == null)
+                Success = false;
             return this;
         }
 

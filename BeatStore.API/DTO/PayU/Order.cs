@@ -1,9 +1,11 @@
-﻿namespace BeatStore.API.DTO.PayU
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+
+namespace BeatStore.API.DTO.PayU
 {
     public class Order
     {
         public Order() { }
-        public Order(string orderId, string extOrderId, DateTime orderCreateDate, string notifyUrl, string customerIp, string merchantPosId, string description, string currencyCode, string totalAmount, Buyer buyer, PayMethod payMethod, List<Product> products, string status)
+        public Order(string orderId, string extOrderId, DateTime orderCreateDate, string notifyUrl, PayMethod payMethod, string customerIp, string merchantPosId, string description, string additionalDescription, string currencyCode, string totalAmount, Buyer buyer, List<Product> products, string status)
         {
             this.orderId = orderId;
             this.extOrderId = extOrderId;
@@ -12,18 +14,20 @@
             this.customerIp = customerIp;
             this.merchantPosId = merchantPosId;
             this.description = description;
+            this.additionalDescription = additionalDescription;
             this.currencyCode = currencyCode;
             this.totalAmount = totalAmount;
-            this.buyer = buyer;
             this.payMethod = payMethod;
+            this.buyer = buyer;
             this.products = products;
             this.status = status;
         }
-        public Order(string extOrderId, string customerIp, string description, string currencyCode, string totalAmount, Buyer buyer, List<Product> products)
+        public Order(string extOrderId, string customerIp, string additionalDescription, string currencyCode, string totalAmount, Buyer buyer, List<Product> products)
         {
             this.extOrderId = extOrderId;
             this.customerIp = customerIp;
-            this.description = description;
+            this.description = "prod. olzoo";
+            this.additionalDescription = additionalDescription;
             this.currencyCode = currencyCode;
             this.totalAmount = totalAmount;
             this.buyer = buyer;
@@ -37,6 +41,7 @@
         public string customerIp { get; set; }
         public string? merchantPosId { get; set; }
         public string description { get; set; }
+        public string? additionalDescription { get; set; }
         public string currencyCode { get; set; }
         public string totalAmount { get; set; }
         public Buyer? buyer { get; set; }

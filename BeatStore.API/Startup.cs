@@ -98,7 +98,7 @@ namespace BeatStore.API
             var connectionString = Configuration.GetValue<string>("ConnectionStrings");
             services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(connectionString));
 
-            /*services.AddCors(c =>
+            services.AddCors(c =>
             {
                 c.AddPolicy("AllowAll",
                     builder =>
@@ -108,7 +108,7 @@ namespace BeatStore.API
                         .AllowAnyMethod()
                         .AllowAnyHeader();
                     });
-            });*/
+            });
 
             // Configure ObjectStorageOptions
             var objectStorageOptions = Configuration.GetSection(nameof(ObjectStorageOptions));

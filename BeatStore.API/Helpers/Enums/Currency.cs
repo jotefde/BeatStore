@@ -469,7 +469,7 @@ namespace BeatStore.API.Helpers.Enums
 
         [EnumMember(Value = "PLN")]
         [Description("Polish złoty")]
-        PLN = 985,
+        PLN = 0,
 
         [EnumMember(Value = "PYG")]
         [Description("Paraguayan guaraní")]

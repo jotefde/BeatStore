@@ -5,10 +5,10 @@ using System.Diagnostics;
 
 namespace BeatStore.API.UseCases.Stock
 {
-    public class GetStockUseCase : ABaseUseCase
+    public class GetStockByIdUseCase : ABaseUseCase
     {
         private readonly IStockRepository _stockRepository;
-        public GetStockUseCase(IStockRepository stockRepository)
+        public GetStockByIdUseCase(IStockRepository stockRepository)
         {
             _stockRepository = stockRepository;
         }

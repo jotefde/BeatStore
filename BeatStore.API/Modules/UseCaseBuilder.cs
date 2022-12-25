@@ -25,7 +25,8 @@ namespace BeatStore.API.Modules
 
             // Stock use cases
             builder.RegisterType<ListAllStockUseCase>().InstancePerLifetimeScope();
-            builder.RegisterType<GetStockUseCase>().InstancePerLifetimeScope();
+            builder.RegisterType<GetStockByIdUseCase>().InstancePerLifetimeScope();
+            builder.RegisterType<GetStockBySlugUseCase>().InstancePerLifetimeScope();
             builder.RegisterType<CreateStockUseCase>().InstancePerLifetimeScope();
             builder.RegisterType<UpdateStockUseCase>().InstancePerLifetimeScope();
 
@@ -36,6 +37,7 @@ namespace BeatStore.API.Modules
 
             // Track storage use cases
             builder.RegisterType<CreateTrackObjectsUseCase>().InstancePerLifetimeScope();
+            builder.RegisterType<GetSampleStreamUseCase>().InstancePerLifetimeScope();
         }
     }
 }

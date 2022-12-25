@@ -116,5 +116,21 @@ namespace BeatStore.API.Repositories
                 return new ValueResponse<Stock>(e.Message, HttpStatusCode.InternalServerError);
             }
         }
+
+        public async Task<ValueResponse<Stock>> GetBySlug(string trackSlug)
+        {
+            try
+            {
+                var results = await _dbContext.Stock
+                    .Include(s => s.Track)
+                    .FirstOrDefaultAsync(s => s.Track.Slug.Equals(trackSlug));
+                return new ValueResponse<Stock>(results);
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine($"StockRepository.GetBySlug: {e.Message}");
+                return new ValueResponse<Stock>(e.Message);
+            }
+        }
     }
 }

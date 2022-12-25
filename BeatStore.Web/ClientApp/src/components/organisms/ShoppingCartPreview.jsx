@@ -18,17 +18,20 @@ const ShoppingCartPreview = ({ selfRef, ...props }) => {
 
         let no = 1;
         const newRows = [];
-        for (const { id, name, slug, price } of shoppingCart.items) {
+        for (const { Id, Name, Slug, Price, Description } of shoppingCart.items) {
             const cells = [
-                <FaRegMinusSquare className='cartPreviewList__removeItemButton' onClick={ () => removeItem(id) }/>,
+                <div  onClick={ () => removeItem(Id) }>
+                    <FaRegMinusSquare className='cartPreviewList__removeItemButton'/>
+                    <span> Remove</span>
+                </div>,
                 `${no}.`,
-                <NavLink to={ `/track/${slug}` }>{name}</NavLink>,
-                price.toLocaleString('pl-PL', { style: 'currency', currency: 'PLN' })
+                <NavLink to={ `/product/${Slug}` }>{Name}</NavLink>,
+                Price.toLocaleString('pl-PL', { style: 'currency', currency: 'PLN' })
             ]
                 .map(
                     (value, index) => <td key={`value-${index}`}>{value}</td>
                 );
-            newRows.push(<tr key={id}>{cells}</tr>);
+            newRows.push(<tr key={Id}>{cells}</tr>);
             no++;
         }
         setRows(newRows);
@@ -50,17 +53,17 @@ const ShoppingCartPreview = ({ selfRef, ...props }) => {
 
             <tfoot className='cartPreviewList__totalPrice'>
                 <tr>
-                    <td colSpan={3}>Total price:</td>
+                    <td colSpan={3}>Total price: </td>
                     <td>{shoppingCart.getTotalPrice().toLocaleString('pl-PL', { style: 'currency', currency: 'PLN' })}</td>
                 </tr>
             </tfoot>
         </table>
 
         <div className='buttons'>
-            <Button as={NavLink} to='/shopping-cart' variant='outline-primary' className={cx('button--outlined', 'button')}>
+            {/*<Button as={NavLink} to='/shopping-cart' variant='outline-primary' className={cx('button--outlined', 'button')}>
                 <span>Go to cart</span> <FaShoppingCart />
-            </Button>
-            <Button as={NavLink} to='/order' variant='success' className='button'>
+            </Button>*/}
+            <Button as={NavLink} to='/shopping-cart' variant='success' className='button' onClick={e => selfRef.current.classList.remove('shoppingCartPreview--visible')}>
                 <span>Buy!</span> <FaCashRegister />
             </Button>
         </div>

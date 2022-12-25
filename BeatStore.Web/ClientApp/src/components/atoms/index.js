@@ -6,6 +6,7 @@ import ToOfferButton from './ToOfferButton';
 import SearchBox from './inputs/SearchBox';
 import PrimaryButton from './inputs/PrimaryButton';
 import GoogleMap from './GoogleMap';
+import CoverImage from './CoverImage.jsx';
 
 const Inputs = {
   SearchBox,
@@ -19,5 +20,6 @@ export {
   PublicImage,
   ToOfferButton,
   Inputs,
-  GoogleMap
+    GoogleMap,
+    CoverImage
 }

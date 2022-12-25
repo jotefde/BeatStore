@@ -3,10 +3,13 @@ import { NavLink, PublicImage } from 'components/atoms';
 import cx from 'classnames';
 
 const DescribedPicturePane = ({ picture, link, title, price, className, children, ...props }) => {
+    let PictureElement = <PublicImage relSrc={picture} alt={title} />;
+    if (picture.startsWith('http') || picture.startsWith('https'))
+        PictureElement = <img src={picture} alt={title} />;
     return (
         <section className={cx('describedPicturePane', className)} {...props}>
             <NavLink to={link} className={'describedPicturePane__image'}>
-                <PublicImage relSrc={picture} alt={title} />
+                {PictureElement}
 
                 {price ? <span className={'describedPicturePane__price'}>{price.toLocaleString('pl-PL', { style: 'currency', currency: 'PLN' })}</span> : <></>}
             </NavLink>

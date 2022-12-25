@@ -37,7 +37,7 @@ namespace BeatStore.API.Controllers
 
 
         #region GET /tracks
-        [HttpGet("tracks")]
+        [HttpGet]
         public async Task<ActionResult> GetTracks()
         {
             await _listAllTracksUseCase.Handle();

@@ -1,0 +1,15 @@
+#ShoppingCart {
+  .pageTitle {
+    margin-bottom: 30px;
+  }
+  background: $themeColor;
+  color: $mainFontColor;
+  padding: 25px;
+
+  .orderForm {
+    margin-top: 25px;
+    @include desktop {
+      margin-top: 0;
+    }
+  }
+}

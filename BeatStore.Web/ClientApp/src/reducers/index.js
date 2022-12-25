@@ -1,46 +1,71 @@
 import { ACTION_TYPE } from 'actions';
 
-const rootReducer = (state = {}, action) => {
+const initState = {
+    getAllStockResponse: {},
+    getStockResponse: {},
+    postNewOrderResponse: {},
+};
+
+const rootReducer = (state = initState, action) => {
     switch (action.type) {
-        case ACTION_TYPE.LIST_TRACKS_SUCCESS:
+
+        case ACTION_TYPE.GET_STOCK_SUCCESS:
             return {
                 ...state,
-                trackList: action.payload
-            }
-
-
-        case ACTION_TYPE.SEND_MESSAGE_REQUEST:
-            return {
-                ...state,
-                contactMessageResult: {
-                    isProcess: true,
-                    isDone: false,
-                    isSuccess: false
+                getStockResponse: {
+                    ...action.payload
                 }
-            }
+            };
 
-        case ACTION_TYPE.SEND_MESSAGE_SUCCESS:
+        case ACTION_TYPE.GET_STOCK_FAILURE:
+            //const errors = {};
+            //Object.values(action.payload).forEach(obj => errors[obj.fieldName] = obj.text);
             return {
                 ...state,
-                contactMessageResult: {
-                    isProcess: false,
-                    isDone: true,
-                    isSuccess: true
+                getStockResponse: {
+                    errors: action.payload
                 }
-            }
+            };
 
-        case ACTION_TYPE.SEND_MESSAGE_FAILURE:
-            const errors = {};
-            Object.values(action.payload).forEach(obj => errors[obj.fieldName] = obj.text);
+        case ACTION_TYPE.LIST_STOCK_SUCCESS:
             return {
                 ...state,
-                contactMessageResult: {
-                    isProcess: false,
-                    isDone: true,
-                    isSuccess: false,
-                    errors
+                getAllStockResponse: {
+                    items: action.payload
                 }
+            };
+
+        case ACTION_TYPE.LIST_STOCK_FAILURE:
+            //const errors = {};
+            //Object.values(action.payload).forEach(obj => errors[obj.fieldName] = obj.text);
+            return {
+                ...state,
+                getAllStockResponse: {
+                    errors: action.payload
+                }
+            };
+
+        case ACTION_TYPE.POST_NEWORDER_REQUEST:
+            return {
+                ...state,
+                postNewOrderResponse: {}
             }
+
+        case ACTION_TYPE.POST_NEWORDER_SUCCESS:
+            return {
+                ...state,
+                postNewOrderResponse: {
+                    redirectUrl: action.payload
+                }
+            };
+
+        case ACTION_TYPE.POST_NEWORDER_FAILURE:
+            //const errors = {};
+            //Object.values(action.payload).forEach(obj => errors[obj.fieldName] = obj.text);
+            return {
+                ...state,
+                postNewOrderResponse: action.payload
+            };
 
         default:
             return state;

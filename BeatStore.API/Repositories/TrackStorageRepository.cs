@@ -33,5 +33,19 @@ namespace BeatStore.API.Repositories
                 return new StandardResponse(e.Message, System.Net.HttpStatusCode.InternalServerError);
             }
         }
+
+        public async Task<ValueResponse<TrackObjects>> GetByTrackId(string id)
+        {
+            try
+            {
+                var to = await _dbContext.TrackStorage.Where(t => t.TrackId.Equals(id)).FirstOrDefaultAsync();
+                return new ValueResponse<TrackObjects>(to);
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine($"TrackStorageRepository.GetByTrackId: {e.Message}");
+                return new ValueResponse<TrackObjects>(e.Message, System.Net.HttpStatusCode.InternalServerError);
+            }
+        }
     }
 }

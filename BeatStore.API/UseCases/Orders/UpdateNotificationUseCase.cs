@@ -33,7 +33,9 @@ namespace BeatStore.API.UseCases.Orders
 
                 tempObject = null;
                 Enum.TryParse(typeof(PaymentMethod), request.order.payMethod?.type, out tempObject);
-                oldOD.PayMethod = (PaymentMethod?)tempObject;
+                var paymentMethod = (PaymentMethod?)tempObject;
+                if (paymentMethod != null)
+                    oldOD.PayMethod = paymentMethod;
                 OutputPort = await _orderRepository.Update(oldOD);
             }
             catch (Exception ex)

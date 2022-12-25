@@ -21,12 +21,12 @@ export const ShoppingCartProvider = ({ children }) => {
 
     const getQuantity = () => cartItems.length;
 
-    const getItem = (id) => cartItems.find((item) => item.id === id);
+    const getItem = (id) => cartItems.find((item) => item.Id === id);
 
-    const addItem = (id, name, slug, price, description) => {
+    const addItem = (Id, Name, Slug, Price, Description) => {
         setCartItems(currItems => {
-            if (getItem(id) == null) 
-                return [...currItems, { id, name, slug, price, description }];
+            if (getItem(Id) == null)
+                return [...currItems, { Id, Name, Slug, Price, Description }];
             else
                 return currItems;
         });
@@ -34,17 +34,21 @@ export const ShoppingCartProvider = ({ children }) => {
 
     const removeItem = (id) => {
         setCartItems(currItems => {
-            return currItems.filter(item => item.id !== id);
+            return currItems.filter(item => item.Id !== id);
         });
     };
 
     const getTotalPrice = () => {
         let total = 0;
         for (const track of cartItems) {
-            total += track.price;
+            total += track.Price;
         }
         return total;
     };
+
+    const clear = () => {
+        setCartItems([]);
+    }
 
     return <ShoppingCartContext.Provider
         value={{
@@ -53,6 +57,7 @@ export const ShoppingCartProvider = ({ children }) => {
             getItem,
             addItem,
             removeItem,
+            clear,
             items: cartItems
         }}
     >

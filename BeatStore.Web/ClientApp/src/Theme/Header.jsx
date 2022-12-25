@@ -25,7 +25,7 @@ const MainHeader = (props) => {
                 <h1>{'prod olzoo'}</h1>
             </NavLink>
 
-            <ShoppingCartPreview selfRef={shoppingCartPreviewRef} className={cx('shoppingCartPreview') } />
+            <ShoppingCartPreview selfRef={shoppingCartPreviewRef} className={cx('shoppingCartPreview', 'shoppingCartPreview--isMinimal') } />
 
             <NavLink to={'/shopping-cart'} className={'shoppingCartButton'} onClick={toggleSCPreview}>
                 <FaShoppingCart className={'shoppingCartButton__icon'} />

@@ -85,12 +85,21 @@ namespace BeatStore.API.Repositories
             try
             {
                 var access = await _dbContext.OrderAccesses
-                .Include(oa => oa.OrderDetails)
                 .Where(oa => oa.Key.Equals(accessKey))
                 .SingleAsync();
                 if (access == null)
                     throw new Exception("Access Key not found");
-                return new ValueResponse<OrderDetails>(access.OrderDetails);
+                var od = await _dbContext.Orders
+                    .Include(o => o.Items)
+                    .ThenInclude(oi => oi.Track)
+                    .Where(o => o.Id.Equals(access.OrderId))
+                    .SingleAsync();
+                od.Items = od.Items.Select(oi =>
+                {
+                    oi.OrderDetails = null;
+                    return oi;
+                }).ToList();
+                return new ValueResponse<OrderDetails>(od);
             }
             catch(Exception e)
             {
@@ -103,6 +112,22 @@ namespace BeatStore.API.Repositories
         {
             var od = await _dbContext.Orders.FindAsync(id);
             return new ValueResponse<OrderDetails>(od);
+        }
+
+        public async Task<ListResponse<OrderItem>> GetItems(string orderId)
+        {
+            try
+            {
+                var items = await _dbContext.OrderItems
+                    .Where(o => o.OrderDetailsId == orderId)
+                    .ToListAsync();
+                return new ListResponse<OrderItem>(items);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return new ListResponse<OrderItem>(e.Message, HttpStatusCode.InternalServerError);
+            }
         }
 
         public async Task<ValueResponse<OrderAccess>> GetOrderAccess(string orderId)

@@ -8,7 +8,7 @@ namespace BeatStore.API.Interfaces.Repositories
 {
     public interface ITrackRepository
     {
-        Task<ListResponse<Track>> GetAll();
+        Task<ListResponse<Track>> GetAll(IEnumerable<string>? ids = null);
         Task<ValueResponse<Track>> GetById(string id);
         Task<StandardResponse> Create(Track track);
     }

@@ -33,6 +33,7 @@ namespace BeatStore.API.Modules
             // Order use cases
             builder.RegisterType<CreateOrderUseCase>().InstancePerLifetimeScope();
             builder.RegisterType<UpdateNotificationUseCase>().InstancePerLifetimeScope();
+            builder.RegisterType<GetOrderByAccessKeyUseCase>().InstancePerLifetimeScope();
             builder.RegisterType<SendOwnedProductsLinkUseCase>().InstancePerLifetimeScope();
 
             // Track storage use cases

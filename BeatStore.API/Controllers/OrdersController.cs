@@ -25,13 +25,15 @@ namespace BeatStore.API.Controllers
         private readonly CreateOrderUseCase _createOrderUseCase;
         private readonly UpdateNotificationUseCase _updateNotificationUseCase;
         private readonly SendOwnedProductsLinkUseCase _sendOwnedProductsLinkUseCase;
+        private readonly GetOrderByAccessKeyUseCase _getOrderByAccessKeyUseCase;
         #endregion
 
-        public OrdersController(CreateOrderUseCase createOrderUseCase, UpdateNotificationUseCase updateNotificationUseCase, SendOwnedProductsLinkUseCase sendOwnedProductsLinkUseCase)
+        public OrdersController(CreateOrderUseCase createOrderUseCase, UpdateNotificationUseCase updateNotificationUseCase, SendOwnedProductsLinkUseCase sendOwnedProductsLinkUseCase, GetOrderByAccessKeyUseCase getOrderByAccessKeyUseCase)
         {
             _createOrderUseCase = createOrderUseCase;
             _updateNotificationUseCase = updateNotificationUseCase;
             _sendOwnedProductsLinkUseCase = sendOwnedProductsLinkUseCase;
+            _getOrderByAccessKeyUseCase = getOrderByAccessKeyUseCase;
         }
 
         #region POST /orders
@@ -47,7 +49,6 @@ namespace BeatStore.API.Controllers
             {
                 Description= orderModel.Description,
                 CurrencyCode= orderModel.CurrencyCode,
-                PayMethod= orderModel.PayMethod,
                 CustomerIP = HttpContext.Connection.RemoteIpAddress?.ToString(),
                 CustomerEmail = orderModel.CustomerEmail,
                 CustomerPhone = orderModel.CustomerPhone,
@@ -57,6 +58,19 @@ namespace BeatStore.API.Controllers
 
             await _createOrderUseCase.Handle(order, orderModel.Items);
             return _createOrderUseCase.OutputPort.GetResult();
+        }
+        #endregion
+
+        #region GET /orders/:accessKey
+        [HttpGet("{accessKey}")]
+        public async Task<ActionResult> GetByAccessKey([FromRoute] string accessKey)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            await _getOrderByAccessKeyUseCase.Handle(accessKey);
+            return _getOrderByAccessKeyUseCase.OutputPort.GetResult();
         }
         #endregion
 

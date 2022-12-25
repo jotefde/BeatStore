@@ -3,6 +3,7 @@ using BeatStore.API.DTO.Responses;
 using BeatStore.API.Entities;
 using BeatStore.API.Helpers;
 using BeatStore.API.Interfaces.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Net;
@@ -18,12 +19,20 @@ namespace BeatStore.API.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<ListResponse<Track>> GetAll()
+        public async Task<ListResponse<Track>> GetAll(IEnumerable<string>? ids = null)
         {
             try
             {
-                var results = _dbContext.Tracks?.ToList();
-                return new ListResponse<Track>(results);
+                if (ids != null)
+                {
+                    var results = await _dbContext.Tracks.Where(t => ids.Contains(t.Id)).ToListAsync();
+                    return new ListResponse<Track>(results);
+                }
+                else
+                {
+                    var results = await _dbContext.Tracks.ToListAsync();
+                    return new ListResponse<Track>(results);
+                }
             }
             catch (Exception e)
             {

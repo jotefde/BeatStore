@@ -24,6 +24,10 @@ const AppRoutes = [
   {
       path: '/product/:slug',
       element: <TrackPage />
+  },
+  {
+      path: '/order/:accessKey/show',
+      element: <TrackPage />
   }
 ];
 

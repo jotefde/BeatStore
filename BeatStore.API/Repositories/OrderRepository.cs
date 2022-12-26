@@ -148,14 +148,19 @@ namespace BeatStore.API.Repositories
             }
         }
 
-        public async Task<bool> HasAccess(string accessKey)
+        public async Task<bool> HasAccess(string trackId, string accessKey)
         {
             try
             {
                 var foundAccess = await _dbContext.OrderAccesses
+                    .Include(oa => oa.OrderDetails)
+                    .ThenInclude(od => od.Items)
                     .Where(oa => oa.Key.Equals(accessKey))
                     .SingleAsync();
-                return foundAccess != null;
+                if (foundAccess == null)
+                    return false;
+                var anyTrackFound = foundAccess.OrderDetails.Items.Any(item => item.TrackId.Equals(trackId));
+                return anyTrackFound;
             }
             catch
             {

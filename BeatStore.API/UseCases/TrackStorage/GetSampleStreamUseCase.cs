@@ -17,27 +17,19 @@ namespace BeatStore.API.UseCases.TrackStorage
 
         public async Task Handle(string trackId)
         {
-            try
+            var to = await _trackStorageRepository.GetByTrackId(trackId);
+            if(!to.Success)
             {
-                var to = await _trackStorageRepository.GetByTrackId(trackId);
-                if(!to.Success)
-                {
-                    OutputPort = new StandardResponse($"Cannot find track objects for Id '{trackId}'", System.Net.HttpStatusCode.NotFound);
-                    return;
-                }
-                if(to.Data.SampleFile == null)
-                {
-                    OutputPort = new StandardResponse($"There is no sample file for '{trackId}'", System.Net.HttpStatusCode.NotFound);
-                    return;
-                }
-                var sampleStream = await _minioOS.GetTrackObject(trackId, to.Data.SampleFile);
-                OutputPort = new StreamResponse(sampleStream, to.Data.SampleFile, "audio/mpeg");
+                OutputPort = new StandardResponse($"Cannot find track objects for Id '{trackId}'", System.Net.HttpStatusCode.NotFound);
+                return;
             }
-            catch (Exception e)
+            if(to.Data.SampleFile == null)
             {
-                Console.WriteLine(e.Message);
-                OutputPort = new StandardResponse(e.Message, System.Net.HttpStatusCode.InternalServerError);
+                OutputPort = new StandardResponse($"There is no sample file for '{trackId}'", System.Net.HttpStatusCode.NotFound);
+                return;
             }
+            var sampleStream = await _minioOS.GetTrackObject(trackId, to.Data.SampleFile);
+            OutputPort = new StreamResponse(sampleStream, to.Data.SampleFile, "audio/mpeg");
         }
     }
 }

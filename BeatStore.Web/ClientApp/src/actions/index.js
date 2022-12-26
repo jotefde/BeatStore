@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const ACTION_TYPE = {
+    SET_ACTION: 'SET_ACTION',
     GET_STOCK_SUCCESS: 'GET_STOCK_SUCCESS',
     GET_STOCK_REQUEST: 'GET_STOCK_REQUEST',
     GET_STOCK_FAILURE: 'GET_STOCK_FAILURE',
@@ -12,6 +13,10 @@ export const ACTION_TYPE = {
     POST_NEWORDER_SUCCESS: 'POST_NEWORDER_SUCCESS',
     POST_NEWORDER_REQUEST: 'POST_NEWORDER_REQUEST',
     POST_NEWORDER_FAILURE: 'POST_NEWORDER_FAILURE',
+
+    GET_ORDER_SUCCESS: 'GET_ORDER_SUCCESS',
+    GET_ORDER_REQUEST: 'GET_ORDER_REQUEST',
+    GET_ORDER_FAILURE: 'GET_ORDER_FAILURE',
 };
 
 const API_URL = 'http://localhost:5225';
@@ -94,11 +99,27 @@ export const sendNewOrder = (values) => dispatch => {
                 type: ACTION_TYPE.POST_NEWORDER_FAILURE,
                 payload: response?.data
             });
-            //.then(() => dispatch({type: ACTION_TYPE.POST_NEWORDER_REQUEST}));
         });
 };
 
 export const resetNewOrderResponse = dispatch => dispatch({ type: ACTION_TYPE.POST_NEWORDER_REQUEST });
+
+export const getCustomerOrder = (accessKey) => dispatch => {
+    dispatch({ type: ACTION_TYPE.GET_ORDER_REQUEST });
+    return getRequest(`orders/customer/${accessKey}`)
+        .then(({ data }) => {
+            dispatch({
+                type: ACTION_TYPE.GET_ORDER_SUCCESS,
+                payload: data
+            });
+        })
+        .catch(({ response }) => {
+            dispatch({
+                type: ACTION_TYPE.GET_ORDER_FAILURE,
+                payload: response?.data
+            });
+        });
+};
 
 /*
 

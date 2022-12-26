@@ -4,6 +4,7 @@ const initState = {
     getAllStockResponse: {},
     getStockResponse: {},
     postNewOrderResponse: {},
+    getCustomerOrderResponse: {}
 };
 
 const rootReducer = (state = initState, action) => {
@@ -65,6 +66,18 @@ const rootReducer = (state = initState, action) => {
             return {
                 ...state,
                 postNewOrderResponse: action.payload
+            };
+
+        case ACTION_TYPE.GET_ORDER_SUCCESS:
+            return {
+                ...state,
+                getCustomerOrderResponse: action.payload
+            };
+
+        case ACTION_TYPE.GET_ORDER_FAILURE:
+            return {
+                ...state,
+                getCustomerOrderResponse: action.payload
             };
 
         default:

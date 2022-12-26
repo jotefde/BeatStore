@@ -15,10 +15,16 @@ export const TrackPage = ({getSingleStock, stockResponse, ...props}) => {
     const shoppingCart = useShoppingCart();
     const [isAddingItem, lockAdding] = useState(false);
     const navigate = useNavigate();
+    const [isMounted, mount] = useState(false);
 
     useEffect(() => {
-        getSingleStock(slug);
-    }, [slug])
+        mount(true);
+    }, [])
+
+    useEffect(() => {
+        if(isMounted)
+            getSingleStock(slug);
+    }, [slug, isMounted]);
 
     if (Stock == null)
         return <></>;

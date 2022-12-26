@@ -3,6 +3,7 @@ import { ContactPage } from "./pages/ContactPage";
 import { AboutUsPage } from "./pages/AboutUsPage";
 import ShoppingCartPage from "./pages/ShoppingCartPage";
 import TrackPage from "./pages/TrackPage";
+import CustomerOrderPage from "./pages/CustomerOrderPage";
 
 const AppRoutes = [
   {
@@ -27,7 +28,7 @@ const AppRoutes = [
   },
   {
       path: '/order/:accessKey/show',
-      element: <TrackPage />
+      element: <CustomerOrderPage />
   }
 ];
 

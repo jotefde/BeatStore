@@ -44,8 +44,8 @@ namespace BeatStore.API.Controllers
         #endregion
 
         #region GET /track-storage/{trackId}/wave
-        [HttpPost("{trackId}/wave")]
-        public async Task<ActionResult> GetWave([FromRoute] [GUID] string trackId, [FromBody] string accessKey)
+        [HttpGet("{trackId}/wave")]
+        public async Task<ActionResult> GetWave([FromRoute] [GUID] string trackId, [FromQuery] string accessKey)
         {
             await _getWaveStreamUseCase.Handle(trackId, accessKey);
             var result = _getWaveStreamUseCase.OutputPort.GetResult();
@@ -54,8 +54,8 @@ namespace BeatStore.API.Controllers
         #endregion
 
         #region GET /track-storage/{trackId}/trackout
-        [HttpPost("{trackId}/trackout")]
-        public async Task<ActionResult> GetTrackout([FromRoute] [GUID] string trackId, [FromBody] string accessKey)
+        [HttpGet("{trackId}/trackout")]
+        public async Task<ActionResult> GetTrackout([FromRoute] [GUID] string trackId, [FromQuery] string accessKey)
         {
             await _getTrackoutStreamUseCase.Handle(trackId, accessKey);
             var result = _getTrackoutStreamUseCase.OutputPort.GetResult();

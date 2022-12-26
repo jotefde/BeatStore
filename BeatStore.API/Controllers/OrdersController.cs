@@ -61,8 +61,8 @@ namespace BeatStore.API.Controllers
         }
         #endregion
 
-        #region GET /orders/:accessKey
-        [HttpGet("{accessKey}")]
+        #region GET /orders/customer/:accessKey
+        [HttpGet("customer/{accessKey}")]
         public async Task<ActionResult> GetByAccessKey([FromRoute] string accessKey)
         {
             if (!ModelState.IsValid)

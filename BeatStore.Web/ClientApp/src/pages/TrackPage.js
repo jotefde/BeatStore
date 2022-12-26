@@ -1,33 +1,27 @@
 ﻿import React, {Component, useEffect, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
-import {connect} from 'react-redux';
 import {Container, Row, Col, Button} from 'react-bootstrap';
-import {getStock} from 'actions';
+import { useGetSingleStock } from "actions";
 import {CoverImage} from 'components/atoms';
 import {BsCheckCircle} from 'react-icons/bs';
 import cx from 'classnames';
 import {FaCashRegister, FaShoppingCart} from "react-icons/fa";
 import {useShoppingCart} from "context/ShoppingCartContext";
+import useDataLoading from "hooks/useDataLoading";
 
-export const TrackPage = ({getSingleStock, stockResponse, ...props}) => {
+export const TrackPage = ({...props}) => {
     const {slug} = useParams();
-    const {Stock, Trackout} = stockResponse;
     const shoppingCart = useShoppingCart();
     const [isAddingItem, lockAdding] = useState(false);
     const navigate = useNavigate();
-    const [isMounted, mount] = useState(false);
 
-    useEffect(() => {
-        mount(true);
-    }, [])
+    const { isLoading, error, data } = useGetSingleStock(slug);
 
-    useEffect(() => {
-        if(isMounted)
-            getSingleStock(slug);
-    }, [slug, isMounted]);
+    const dataLoading = useDataLoading(isLoading, error);
+    if(dataLoading)
+        return dataLoading;
 
-    if (Stock == null)
-        return <></>;
+    const {Stock, Trackout} = data;
     const {Track} = Stock;
 
     const addToCart = ({Id, Name, Slug, Price, Description}) => {
@@ -111,10 +105,4 @@ export const TrackPage = ({getSingleStock, stockResponse, ...props}) => {
     );
 }
 
-const mapDispatchToProps = dispatch => ({
-    getSingleStock: (slug) => dispatch(getStock(slug))
-})
-
-const mapStateToProps = ({getStockResponse}) => ({stockResponse: getStockResponse});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TrackPage);
+export default TrackPage;

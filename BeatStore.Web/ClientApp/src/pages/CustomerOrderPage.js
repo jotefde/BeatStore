@@ -1,40 +1,19 @@
-import React, {Component, useEffect, useState} from 'react';
-import {useLocation, useNavigate, useParams} from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {Container, Row, Col, Button} from 'react-bootstrap';
-import { getCustomerOrder } from 'actions';
-import {CoverImage} from 'components/atoms';
+import {Container, Row, Col} from 'react-bootstrap';
+import { useGetCustomerOrder } from 'actions';
 import cx from 'classnames';
+import ClipLoader from "react-spinners/ClipLoader";
+import useDataLoading from 'hooks/useDataLoading';
 
-const CustomerOrderPage = ({getOrder, orderResponse, ...props}) => {
+const CustomerOrderPage = ({...props}) => {
     const { accessKey } = useParams();
-    const location = useLocation();
-    const [order, setOrder] = useState(null);
-    const [trackObjects, setTrackObjects] = useState(null);
-    const [isMounted, mount] = useState(false);
-    const [isLoaded, setLoad] = useState(false);
+    const { isLoading, error, data } = useGetCustomerOrder(accessKey);
 
-    useEffect(() => {
-        mount(true);
-    }, [])
-
-    useEffect(() => {
-        if(isMounted)
-            getOrder(accessKey);
-    }, [accessKey, isMounted]);
-
-    useEffect(() => {
-        if(orderResponse.length <= 0)
-            return;
-        setLoad(true);
-        const {Order, TrackObjects} = orderResponse;
-        setOrder(Order);
-        setTrackObjects(TrackObjects);
-    }, [orderResponse]);
-
-    if(!isLoaded)
-        return <></>;
-    console.log(order);
+    const dataLoading = useDataLoading(isLoading, error);
+    if(dataLoading)
+        return dataLoading;
 
     //const tracks = order.Items.map(item => item.Track);
     return (
@@ -47,10 +26,4 @@ const CustomerOrderPage = ({getOrder, orderResponse, ...props}) => {
     );
 }
 
-const mapDispatchToProps = dispatch => ({
-    getOrder: (accessKey) => dispatch(getCustomerOrder(accessKey))
-})
-
-const mapStateToProps = ({getCustomerOrderResponse}) => ({orderResponse: getCustomerOrderResponse});
-
-export default connect(mapStateToProps, mapDispatchToProps)(CustomerOrderPage);
+export default CustomerOrderPage;

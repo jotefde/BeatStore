@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react';
 import cx from 'classnames';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { DescribedPicturePane } from 'components/molecules';
-import { connect } from 'react-redux';
 import { FaShoppingCart, FaCashRegister } from 'react-icons/fa';
 import { useShoppingCart } from 'context/ShoppingCartContext';
-import {useLocation, useNavigate} from 'react-router-dom';
-import { getAllStock } from 'actions';
+import {useNavigate} from 'react-router-dom';
+import { useListStock } from 'actions';
+import useDataLoading from "hooks/useDataLoading";
+import ClipLoader from "react-spinners/ClipLoader";
 
-const TrackGrid = ({ getStock, getAllStockResponse, className, ...props }) => {
+const TrackGrid = ({ className, ...props }) => {
     const shoppingCart = useShoppingCart();
     const [isAddingItem, lockAdding] = useState(false);
-    const [tracks, setTracks] = useState([]);
 
     const addToCart = (id, name, slug, price, description) => {
         if (isAddingItem)
@@ -21,29 +21,14 @@ const TrackGrid = ({ getStock, getAllStockResponse, className, ...props }) => {
         setTimeout(() => lockAdding(false), 200);
     };
     const navigate = useNavigate();
-    const location = useLocation();
-    useEffect(() => {
-        getStock()
-    }, [location.pathname])
 
-    useEffect(() => {
-        if (!getAllStockResponse.errors && getAllStockResponse.items) {
-            const newTracks = getAllStockResponse.items.map(stock => stock.Track);
-            setTracks(newTracks);
-        }
-    }, [getAllStockResponse.items])
+    const { isLoading, isError, isSuccess, error, data } = useListStock();
 
-    /*tracks = [
-        { id: 1, name: 'Track #1', slug: 'cover_test_white-1', price: 25.00, description: 'Common description right here my man...' },
-        { id: 2, name: 'Freaky track dude', slug: 'cover_test_white-1', price: 25.00, description: 'Common description right here my man...' },
-        { id: 3, name: 'Track #2', slug: 'cover_test_white-1', price: 25.00, description: 'Common description right here my man...' },
-        { id: 4, name: 'Premium track', slug: 'cover_test_premium-3', price: 150.00, description: 'Common description right here my man...' },
-        { id: 5, name: 'Lighten track', slug: 'cover_test_premium-4', price: 80.00, description: 'Common description right here my man...' },
-        { id: 6, name: 'Another track', slug: 'cover_test_white-1', price: 25.00, description: 'Common description right here my man...' },
-        { id: 7, name: 'Track #3', slug: 'cover_test_white-1', price: 25.00, description: 'Common description right here my man...' },
-        { id: 8, name: 'Yeah boy', slug: 'cover_test_premium-4', price: 80.00, description: 'Common description right here my man...' },
-        { id: 9, name: 'Whats is it?', slug: 'cover_test_white-1', price: 25.00, description: 'Common description right here my man...' }
-    ];*/
+    const dataLoading = useDataLoading(isLoading, error);
+    if(dataLoading)
+        return dataLoading;
+
+    const tracks = data?.map(stock => stock.Track) ?? [];
     const mappedTracks = [];
     for (const { Id, Name, Slug, Price, Description } of tracks) {
         const track = <Col className={'trackCard'} xs={12} md={6} lg={4} xl={3} key={Id}>
@@ -78,10 +63,4 @@ const TrackGrid = ({ getStock, getAllStockResponse, className, ...props }) => {
     return <Row>{mappedTracks}</Row>;
 };
 
-const mapDispatchToProps = dispatch => ({
-    getStock: () => dispatch(getAllStock)
-})
-
-const mapStateToProps = ({ getAllStockResponse }) => ({ getAllStockResponse });
-
-export default connect(mapStateToProps, mapDispatchToProps)(TrackGrid);
+export default TrackGrid;

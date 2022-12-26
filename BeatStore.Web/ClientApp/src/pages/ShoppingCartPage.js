@@ -1,12 +1,11 @@
 ﻿import React, {useEffect, useState} from 'react';
 import { Col, Container, Row, Button, Form, InputGroup } from 'react-bootstrap';
 import {ShoppingCartPreview} from "components/organisms";
-import {sendNewOrder, resetNewOrderResponse} from "actions";
-import {connect} from "react-redux";
+import { usePostNewOrder } from "actions";
 import cx from 'classnames';
 import {useShoppingCart} from "context/ShoppingCartContext";
 
-const ShoppingCartPage = ({newOrderResponse, sendOrder, resetResponse}) => {
+const ShoppingCartPage = () => {
     const shoppingCart = useShoppingCart();
     const [errors, setErrors] = useState({});
     const initValues = {
@@ -19,26 +18,27 @@ const ShoppingCartPage = ({newOrderResponse, sendOrder, resetResponse}) => {
     };
     const [values, setValues] = useState(initValues);
 
-    useEffect(() => {
-        if(newOrderResponse?.errors)
-        {
-            delete newOrderResponse.errors.Items;
-            const newErrors = {};
-            for (const [key, value] of Object.entries(newOrderResponse.errors)) {
-                newErrors[key] = value[0];
-            }
-            setErrors(newErrors);
-            resetResponse();
+    const newOrderMutation = usePostNewOrder();
+
+    if(newOrderMutation.IsError)
+    {
+        delete newOrderMutation.error.message.errors.Items;
+        const newErrors = {};
+        for (const [key, value] of Object.entries(newOrderMutation.error.message.errors)) {
+            newErrors[key] = value[0];
         }
-        else if(newOrderResponse?.redirectUrl)
-        {
-            setErrors({});
-            setValues(initValues);
-            shoppingCart.clear();
-            window.open(newOrderResponse.redirectUrl, '_blank');
-            resetResponse();
-        }
-    }, [newOrderResponse])
+        setErrors(newErrors);
+        newOrderMutation.reset()
+    }
+
+    if(newOrderMutation.IsSuccess)
+    {
+        setErrors({});
+        setValues(initValues);
+        shoppingCart.clear();
+        window.open(newOrderMutation.data.redirectUrl, '_blank');
+        newOrderMutation.reset()
+    }
 
     const handleSubmit = (e) => {
         const form = e.currentTarget;
@@ -63,7 +63,7 @@ const ShoppingCartPage = ({newOrderResponse, sendOrder, resetResponse}) => {
         const newValues = {...values};
         delete newValues.CustomerEmailRepeat;
 
-        sendOrder({
+        newOrderMutation.mutate({
             ...newValues,
             CurrencyCode: 'PLN',
             Items: shoppingCart.items.map(item => item.Id)
@@ -202,7 +202,7 @@ const ShoppingCartPage = ({newOrderResponse, sendOrder, resetResponse}) => {
                             <Form.Group as={Col} md={6} controlId="PayMethod">
                                 <Form.Label>Payment method*</Form.Label>
                                 <Form.Select
-                                    value={'PayU'}>
+                                    value='PayU'>
                                     <option value="PayU">PayU Online transfer</option>
                                    {/* <option value="CARD_TOKEN">Credit card</option>*/}
                                 </Form.Select>
@@ -233,11 +233,4 @@ const ShoppingCartPage = ({newOrderResponse, sendOrder, resetResponse}) => {
     );
 }
 
-const mapDispatchToProps = dispatch => ({
-    sendOrder: (values) => dispatch(sendNewOrder(values)),
-    resetResponse: () => dispatch(resetNewOrderResponse)
-})
-
-const mapStateToProps = ({postNewOrderResponse}) => ({newOrderResponse: postNewOrderResponse});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ShoppingCartPage);
+export default ShoppingCartPage;

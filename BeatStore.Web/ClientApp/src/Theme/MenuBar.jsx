@@ -1,9 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { FaBars, FaAngleDown, FaAngleUp } from 'react-icons/fa';
+import React, { useEffect, useRef } from 'react';
+import { FaBars } from 'react-icons/fa';
 import cx from 'classnames';
-import { NavLink, PublicImage } from 'components/atoms';
-import { getProductCategories } from 'actions';
-import { connect } from 'react-redux';
+import { NavLink } from 'components/atoms';
 
 const menu = [
     { name: 'Home', path: '/' },
@@ -15,14 +13,9 @@ const menuItemElement = ({ name, path }) => <li key={name} className={'menuItem'
     <NavLink to={path} className={ 'menuItem__link' }>{name}</NavLink>
 </li>;
 
-const MenuBar = ({ categories, getCategories, ...props }) => {
-
-    useEffect(() => {
-        //getCategories();
-    }, []);
+const MenuBar = ({ ...props }) => {
 
     const mainMenuWrapRef = useRef(null);
-
 
     const handleHamburgerClick = e => {
         mainMenuWrapRef.current.classList.toggle('mainMenuWrap--active');
@@ -47,10 +40,4 @@ const MenuBar = ({ categories, getCategories, ...props }) => {
     );
 };
 
-const mapDispatchToProps = dispatch => ({
-    /*getCategories: (getCategories) => dispatch(getCategories)*/
-})
-
-const mapStateToProps = ({ categories }) => ({ categories });
-
-export default connect(mapStateToProps, mapDispatchToProps)(MenuBar);
+export default MenuBar;

@@ -3,11 +3,9 @@ import { Form } from 'react-bootstrap';
 import { Inputs } from 'components/atoms';
 import { GoogleRecaptcha } from 'components/molecules';
 import cx from 'classnames';
-import { sendContactMessage } from 'actions';
-import { connect } from 'react-redux';
+import { usePostContactMessage } from 'actions';
 
-const ContactForm = ({ sendMessage, contactMessageResult, className, ...props }) => {
-    const [isDisabled, setDisable] = useState(false);
+const ContactForm = ({ className, ...props }) => {
     const [fields, setFields] = useState({
         name: '',
         subject: '',
@@ -21,41 +19,35 @@ const ContactForm = ({ sendMessage, contactMessageResult, className, ...props })
         email: '',
         message: ''
     });
-
     const [captchaVerified, setCaptchaVerification] = useState(false);
     const onCaptchaVerified = verified => setCaptchaVerification(verified);
+    const sendMessageMutation = usePostContactMessage();
 
-    useEffect(() => {
-        const { isProcess, isDone, isSuccess, errors: newErrors } = contactMessageResult;
-        if (isProcess)
-            setDisable(true);
-        else
-            setDisable(false);
-
-        if (isDone && !isSuccess) {
-            for (let key of Object.keys(errors)) {
-                if (newErrors[key])
-                    errors[key] = newErrors[key];
-                else
-                    errors[key] = '';
-            }
-
-            setErrors(errors);
-        }
-        else if (isSuccess) {
-            console.log("SUCCESS");
-            for (let key of Object.keys(fields))
-                fields[key] = '';
-            for (let key of Object.keys(errors))
+    if(sendMessageMutation.isError)
+    {
+        const newErrors = sendMessageMutation.error.message.errors;
+        for (let key of Object.keys(errors)) {
+            if (newErrors[key])
+                errors[key] = newErrors[key];
+            else
                 errors[key] = '';
-            setFields(fields);
-            setErrors(errors);
-
         }
-    }, [contactMessageResult]);
+        setErrors(errors);
+    }
+
+    if(sendMessageMutation.isSuccess)
+    {
+        console.log("SUCCESS");
+        for (let key of Object.keys(fields))
+            fields[key] = '';
+        for (let key of Object.keys(errors))
+            errors[key] = '';
+        setFields(fields);
+        setErrors(errors);
+    }
 
     const handleInputChange = e => {
-        if (isDisabled)
+        if (sendMessageMutation.isLoading)
             return;
         const { name, value } = e.target;
         if (fields[name] !== value) {
@@ -68,8 +60,8 @@ const ContactForm = ({ sendMessage, contactMessageResult, className, ...props })
 
     const handleSubmit = e => {
         e.preventDefault();
-        if (!isDisabled && captchaVerified)
-            sendMessage(fields);
+       if (!sendMessageMutation.isLoading && captchaVerified)
+            sendMessageMutation.mutate(fields);
     }
 
     const FormField = (name, label, placeholder, type) => (
@@ -84,7 +76,7 @@ const ContactForm = ({ sendMessage, contactMessageResult, className, ...props })
                 onChange={handleInputChange}
                 placeholder={placeholder}
                 isInvalid={errors[name]?.length > 0}
-                disabled={isDisabled}
+                disabled={sendMessageMutation.isLoading}
             />
             <Form.Control.Feedback type="invalid" tooltip>
                 {errors[name]}
@@ -112,7 +104,7 @@ const ContactForm = ({ sendMessage, contactMessageResult, className, ...props })
                 </Form.Floating>
 
                 <Inputs.PrimaryButton variant="primary" type="submit"
-                    disabled={isDisabled || !captchaVerified}>
+                    disabled={sendMessageMutation.isLoading || !captchaVerified}>
                     {'Wyślij'}
                 </Inputs.PrimaryButton>
             </Form>
@@ -120,17 +112,4 @@ const ContactForm = ({ sendMessage, contactMessageResult, className, ...props })
     );
 };
 
-const mapDispatchToProps = dispatch => ({
-    sendMessage: (fields) => dispatch(sendContactMessage(fields))
-})
-
-const mapStateToProps = ({ contactMessageResult }) => ({
-    contactMessageResult: contactMessageResult || {
-        isProcess: false,
-        isDone: false,
-        isSuccess: false,
-        errors: []
-    }
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
+export default ContactForm;

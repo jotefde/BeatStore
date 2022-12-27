@@ -8,7 +8,7 @@ export const ACTION_TYPE = {
     GET_ORDER_REQUEST: 'GET_ORDER_REQUEST',
 };
 
-const API_URL = 'http://localhost:5225';
+export const API_URL = 'http://localhost:5225';
 const getRequest = (route) => axios
     .get(`${API_URL}/${route}`)
     .then(({data}) => data)

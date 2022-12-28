@@ -38,9 +38,7 @@ namespace BeatStore.API.Modules
 
             // Track storage use cases
             builder.RegisterType<CreateTrackObjectsUseCase>().InstancePerLifetimeScope();
-            builder.RegisterType<GetSampleStreamUseCase>().InstancePerLifetimeScope();
-            builder.RegisterType<GetWaveStreamUseCase>().InstancePerLifetimeScope();
-            builder.RegisterType<GetTrackoutStreamUseCase>().InstancePerLifetimeScope();
+            builder.RegisterType<GetObjectStreamUseCase>().InstancePerLifetimeScope();
         }
     }
 }

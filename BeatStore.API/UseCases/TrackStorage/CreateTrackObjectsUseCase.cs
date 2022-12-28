@@ -4,6 +4,8 @@ using BeatStore.API.Helpers;
 using BeatStore.API.Interfaces.Services;
 using BeatStore.API.Interfaces.Repositories;
 using BeatStore.API.Repositories;
+using BeatStore.API.Helpers.Enums;
+using BeatStore.API.Interfaces.DTO.Responses;
 
 namespace BeatStore.API.UseCases.TrackStorage
 {
@@ -30,30 +32,45 @@ namespace BeatStore.API.UseCases.TrackStorage
                     return;
                 }
 
-                var trackObjects = new TrackObjects
+                var createdObjects = new List<string>();
+                var result = await saveObject(trackId, TrackObjectType.WAVE_FILE, waveFile);
+                if (!result.Success)
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    TrackId = trackId,
-                    WaveFile = waveFile.FileName,
-                    SampleFile = sampleFile?.FileName,
-                    TrackoutFile = trackoutPack.FileName
-                };
+                    OutputPort = result;
+                    return;
+                }
+                createdObjects.Add(result.Data);
 
-                await uploadToMinIO(trackId, waveFile);
-                await uploadToMinIO(trackId, trackoutPack);
+                result = await saveObject(trackId, TrackObjectType.TRACKOUT_FILE, trackoutPack);
+                if (!result.Success)
+                {
+                    OutputPort = result;
+                    return;
+                }
+                createdObjects.Add(result.Data);
+
+
                 if (sampleFile != null)
-                    await uploadToMinIO(trackId, sampleFile);
+                {
+                    result = await saveObject(trackId, TrackObjectType.SAMPLE_FILE, sampleFile);
+                    if (!result.Success)
+                    {
+                        OutputPort = result;
+                        return;
+                    }
+                    createdObjects.Add(result.Data);
+                }
 
-                var response = await _trackStorageRepository.Create(trackObjects);
-                OutputPort = response;
+                OutputPort = new ListResponse<string>(createdObjects);
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 OutputPort = new StandardResponse(e.Message, System.Net.HttpStatusCode.InternalServerError);
             }
         }
 
-        private async Task uploadToMinIO(string trackId, IFormFile file)
+        private async Task<StandardResponse> saveObject(string trackId, TrackObjectType type, IFormFile file)
         {
             var minioResult = false;
             using (var stream = new MemoryStream())
@@ -64,6 +81,19 @@ namespace BeatStore.API.UseCases.TrackStorage
             }
             if (!minioResult)
                 throw new Exception($"An error occurred while uploading '{file.FileName}' to ObjectStorage");
+
+            var trackObject = new TrackObject
+            {
+                Id = Guid.NewGuid().ToString(),
+                TrackId = trackId,
+                Name = file.FileName,
+                ObjectType = type,
+                MIME = file.ContentType,
+                Size = file.Length
+            };
+
+            var response = await _trackStorageRepository.Create(trackObject);
+            return response;
         }
     }
 }

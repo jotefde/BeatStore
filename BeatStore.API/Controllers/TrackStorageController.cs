@@ -3,6 +3,7 @@ using BeatStore.API.DTO.Requests.TrackStorage;
 using BeatStore.API.DTO.Responses;
 using BeatStore.API.Entities;
 using BeatStore.API.Extensions.RequestAttributes;
+using BeatStore.API.Helpers.Enums;
 using BeatStore.API.UseCases.Tracks;
 using BeatStore.API.UseCases.TrackStorage;
 using Microsoft.AspNetCore.Authorization;
@@ -15,21 +16,17 @@ namespace BeatStore.API.Controllers
     public class TrackStorageController : ControllerBase
     {
         private readonly CreateTrackObjectsUseCase _createTrackObjectsUseCase;
-        private readonly GetSampleStreamUseCase _getSampleStreamUseCase;
-        private readonly GetWaveStreamUseCase _getWaveStreamUseCase;
-        private readonly GetTrackoutStreamUseCase _getTrackoutStreamUseCase;
+        private readonly GetObjectStreamUseCase _getObjectStreamUseCase;
 
-        public TrackStorageController(CreateTrackObjectsUseCase createTrackObjectsUseCase, GetSampleStreamUseCase getSampleStreamUseCase, GetWaveStreamUseCase getWaveStreamUseCase, GetTrackoutStreamUseCase getTrackoutStreamUseCase)
+        public TrackStorageController(CreateTrackObjectsUseCase createTrackObjectsUseCase, GetObjectStreamUseCase getObjectStreamUseCase)
         {
             _createTrackObjectsUseCase = createTrackObjectsUseCase;
-            _getSampleStreamUseCase = getSampleStreamUseCase;
-            _getWaveStreamUseCase = getWaveStreamUseCase;
-            _getTrackoutStreamUseCase = getTrackoutStreamUseCase;
+            _getObjectStreamUseCase = getObjectStreamUseCase;
         }
 
         #region POST /track-storage/upload-all
         [HttpPost("upload-all")]
-        [Authorize(Roles = Helpers.Constants.UserRole.Admin)]
+        //[Authorize(Roles = Helpers.Constants.UserRole.Admin)]
         [RequestSizeLimit(200_000_000)]
         public async Task<ActionResult> UploadAll([FromForm] UploadPackageRequest request)
         {
@@ -43,32 +40,12 @@ namespace BeatStore.API.Controllers
         }
         #endregion
 
-        #region GET /track-storage/{trackId}/wave
-        [HttpGet("{trackId}/wave")]
-        public async Task<ActionResult> GetWave([FromRoute] [GUID] string trackId, [FromQuery] string accessKey)
+        #region GET /track-storage/{trackId}/{objectType}
+        [HttpGet("{trackId}/{objectType}")]
+        public async Task<ActionResult> GetStream([FromRoute] [GUID] string trackId, [FromRoute] TrackObjectType objectType, [FromQuery] string accessKey)
         {
-            await _getWaveStreamUseCase.Handle(trackId, accessKey);
-            var result = _getWaveStreamUseCase.OutputPort.GetResult();
-            return result;
-        }
-        #endregion
-
-        #region GET /track-storage/{trackId}/trackout
-        [HttpGet("{trackId}/trackout")]
-        public async Task<ActionResult> GetTrackout([FromRoute] [GUID] string trackId, [FromQuery] string accessKey)
-        {
-            await _getTrackoutStreamUseCase.Handle(trackId, accessKey);
-            var result = _getTrackoutStreamUseCase.OutputPort.GetResult();
-            return result;
-        }
-        #endregion
-
-        #region GET /track-storage/{trackId}/sample
-        [HttpGet("{trackId}/sample")]
-        public async Task<ActionResult> GetSample([FromRoute] [GUID] string trackId)
-        {
-            await _getSampleStreamUseCase.Handle(trackId);
-            var result = _getSampleStreamUseCase.OutputPort.GetResult();
+            await _getObjectStreamUseCase.Handle(trackId, accessKey, objectType);
+            var result = _getObjectStreamUseCase.OutputPort.GetResult();
             return result;
         }
         #endregion

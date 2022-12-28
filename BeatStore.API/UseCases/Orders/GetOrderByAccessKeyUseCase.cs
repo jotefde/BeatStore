@@ -31,28 +31,7 @@ namespace BeatStore.API.UseCases.Orders
             }
             var orderDetails = getByAccessResult.Data;
 
-            /*var getItemsResult = await _orderRepository.GetItems(orderDetails.Id);
-            if (!getItemsResult.Success)
-            {
-                OutputPort = getItemsResult;
-                return;
-            }
-            var trackIds = orderDetails.Items.Select(x => x.TrackId);
-            if(!trackIds.Any())
-            {
-                OutputPort = new StandardResponse("Server cannot find owned tracks", HttpStatusCode.InternalServerError);
-                return;
-            }
-
-            var getTracksResult = await _trackRepository.GetAll(trackIds);
-            if (!getTracksResult.Success)
-            {
-                OutputPort = getTracksResult;
-                return;
-            }
-            var tracks = getTracksResult.Data;*/
-
-            var trackObjects = new Dictionary<string, TrackObjects>();
+            var trackObjects = new Dictionary<string, IEnumerable<TrackObject>>();
             foreach(var orderItem in orderDetails.Items)
             {
                 var getByTrackResult = await _trackStorageRepository.GetByTrackId(orderItem.TrackId);

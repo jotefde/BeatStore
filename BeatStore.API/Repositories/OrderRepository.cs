@@ -94,11 +94,6 @@ namespace BeatStore.API.Repositories
                     .ThenInclude(oi => oi.Track)
                     .Where(o => o.Id.Equals(access.OrderId))
                     .SingleAsync();
-                od.Items = od.Items.Select(oi =>
-                {
-                    oi.OrderDetails = null;
-                    return oi;
-                }).ToList();
                 return new ValueResponse<OrderDetails>(od);
             }
             catch(Exception e)

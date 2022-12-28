@@ -27,13 +27,13 @@ namespace BeatStore.API.UseCases.Stock
                     OutputPort = new StandardResponse($"Cannot find track with slug '{slug}'", System.Net.HttpStatusCode.NotFound);
                     return;
                 }
-                var trackObject = await _trackStorageRepository.GetByTrackId(response?.Data?.Track.Id);
+                var trackObject = await _trackStorageRepository.GetByTrackId(response?.Data?.Track.Id, Helpers.Enums.TrackObjectType.TRACKOUT_FILE);
                 if(!trackObject.Success)
                 {
                     OutputPort = new ValueResponse<object>(new { Stock = response?.Data, Trackout = new List<string>() });
                     return;
                 }
-                var zipFile = await _minioClient.GetTrackObject(trackObject.Data.TrackId, trackObject.Data.TrackoutFile);
+                var zipFile = await _minioClient.GetTrackObject(trackObject.Data.TrackId, trackObject.Data.Name);
                 var entryList = new List<string>();
 
                 using (ZipArchive archive = new ZipArchive(zipFile))

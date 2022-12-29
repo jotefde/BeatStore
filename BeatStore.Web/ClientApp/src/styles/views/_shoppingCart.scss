@@ -8,8 +8,14 @@
 
   .orderForm {
     margin-top: 25px;
+
     @include desktop {
       margin-top: 0;
+    }
+
+    output {
+      padding: 7px 0;
+      color: rgb(200, 0, 0);
     }
   }
 }

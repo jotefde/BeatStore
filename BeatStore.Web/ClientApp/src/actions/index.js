@@ -8,7 +8,7 @@ export const ACTION_TYPE = {
     GET_ORDER_REQUEST: 'GET_ORDER_REQUEST',
 };
 
-export const API_URL = 'http://localhost:5225';
+export const API_URL = 'https://2032-188-146-139-1.eu.ngrok.io';
 const getRequest = (route) => axios
     .get(`${API_URL}/${route}`)
     .then(({data}) => data)
@@ -20,7 +20,7 @@ const postRequest = (route, payload) => axios
     .post(`${API_URL}/${route}`, payload)
     .then(({data}) => data)
     .catch(({response}) => {
-        return Promise.reject(response.data);
+        return Promise.reject(response.data.errors);
     });
 
 const formRequest = (route, fields) => {

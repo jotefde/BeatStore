@@ -31,8 +31,9 @@ body {
 }
 
 .pageContent {
-    @include full-display {
-        margin-top: 10px;
+    margin-top: 25px;
+    @include tablet {
+        margin-top: 40px;
     }
 }
 
@@ -64,3 +65,4 @@ body {
 @import "views/_notFound";
 @import "views/_trackPage";
 @import "views/_shoppingCart";
+@import "views/_customerOrder";

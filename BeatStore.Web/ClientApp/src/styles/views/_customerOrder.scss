@@ -1,0 +1,117 @@
+#CustomerOrder
+{
+  @include full-display {
+    width: 80vw;
+  }
+  color: $mainFontColor;
+
+  .paymentInfo {
+    /*background: $themeColor;
+    box-shadow: $floatingBoxShadow;
+    border: 2px solid $darkenThemeColor;
+    border-radius: 5px;*/
+    padding: 25px;
+    text-align: center;
+
+    &__warning {
+      color: rgb(200, 0, 0);
+    }
+
+    &__paymentId {
+      padding: 15px 0;
+      span {
+        color: rgb(0, 150, 0);
+      }
+    }
+
+    table {
+      margin: 0 auto;
+      border-collapse: separate;
+      border-spacing: 8px;
+      tr {
+        td:first-child {
+          text-align: right;
+        }
+        td:last-child {
+          text-align: left;
+          padding-left: 7px;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .orderItems {
+    /*background: $themeColor;
+    box-shadow: $floatingBoxShadow;
+    border: 2px solid $darkenThemeColor;
+    border-radius: 5px;*/
+    padding: 25px;
+    margin-top: 15px;
+
+    &__title {
+      text-align: center;
+      padding-bottom: 25px;
+    }
+
+    .track {
+      margin-top: 15px;
+      background: $midThemeColor;
+
+      @include desktop {
+        margin-top: 5px;
+      }
+
+      &__cover {
+        border: 1px solid $darkenThemeColor;
+        padding: 0;
+        img {
+          width: 100%;
+        }
+      }
+
+      &__name {
+        display: block;
+        font-weight: bold;
+        font-size: 1.2em;
+        margin: 15px 0;
+      }
+
+      &__files {
+        margin: 20px auto;
+        border-collapse: collapse;
+        width: 100%;
+
+        .emptyTrackout {
+          text-align: center;
+        }
+
+        td, th {
+          padding: 12px;
+          &:nth-child(2) {
+            width: auto;
+            text-align: center;
+          }
+        }
+
+        tbody {
+          tr {
+            border-bottom: 1px solid $lightenThemeColor;
+            a {
+              color: $lightenThemeColor;
+            }
+          }
+        }
+      }
+
+      &__content {
+        border: 1px solid $darkenThemeColor;
+        border-top: none;
+        @include desktop {
+          border: 1px solid $darkenThemeColor;
+          border-left: none;
+        }
+      }
+    }
+  }
+}

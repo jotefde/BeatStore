@@ -4,6 +4,7 @@ import {ShoppingCartPreview} from "components/organisms";
 import { usePostNewOrder } from "actions";
 import cx from 'classnames';
 import {useShoppingCart} from "context/ShoppingCartContext";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const ShoppingCartPage = () => {
     const shoppingCart = useShoppingCart();
@@ -18,27 +19,36 @@ const ShoppingCartPage = () => {
     };
     const [values, setValues] = useState(initValues);
 
-    const newOrderMutation = usePostNewOrder();
+    const { isLoading, isSuccess, isError, mutate, error, data, reset } = usePostNewOrder();
 
-    if(newOrderMutation.IsError)
-    {
-        delete newOrderMutation.error.message.errors.Items;
-        const newErrors = {};
-        for (const [key, value] of Object.entries(newOrderMutation.error.message.errors)) {
-            newErrors[key] = value[0];
+
+    useEffect(() => {
+
+        if(isSuccess)
+        {
+            setErrors({});
+            setValues(initValues);
+            shoppingCart.clear();
+            window.open(data, '_blank');
+            reset();
         }
-        setErrors(newErrors);
-        newOrderMutation.reset()
-    }
+        else if(isError)
+        {
+            if(Array.isArray(error))
+            {
+                setErrors(error);
+            }
+            else {
+                const newErrors = {};
+                for (const [key, value] of Object.entries(error)) {
+                    newErrors[key] = value[0];
+                }
+                setErrors(newErrors);
+            }
+            reset();
+        }
+    }, [isSuccess, isError])
 
-    if(newOrderMutation.IsSuccess)
-    {
-        setErrors({});
-        setValues(initValues);
-        shoppingCart.clear();
-        window.open(newOrderMutation.data.redirectUrl, '_blank');
-        newOrderMutation.reset()
-    }
 
     const handleSubmit = (e) => {
         const form = e.currentTarget;
@@ -63,7 +73,7 @@ const ShoppingCartPage = () => {
         const newValues = {...values};
         delete newValues.CustomerEmailRepeat;
 
-        newOrderMutation.mutate({
+        mutate({
             ...newValues,
             CurrencyCode: 'PLN',
             Items: shoppingCart.items.map(item => item.Id)
@@ -221,7 +231,21 @@ const ShoppingCartPage = () => {
                         </Row>
 
                         <Row className={cx('mb-3', 'justify-content-center')}>
-                            <Button variant={'success'} disabled={shoppingCart.getQuantity() < 1} type="submit">Confirm and pay</Button>
+                            <Button variant={'success'} disabled={shoppingCart.getQuantity() < 1 || isLoading} type="submit">
+                                { isLoading ?
+                                    <ClipLoader
+                                        color={'white'}
+                                        size={25}
+                                        aria-label="Loading Spinner"
+                                        data-testid="loader"
+                                    /> :
+                                    'Confirm and pay'
+                                }
+
+                            </Button>
+                            <output>
+                                {errors[0] && <p>Error: "{errors[0]}"</p>}
+                            </output>
                         </Row>
                     </Form>
                 </Col>

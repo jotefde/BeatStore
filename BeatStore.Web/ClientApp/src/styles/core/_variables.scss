@@ -15,7 +15,7 @@ $backgroundColor: rgb(10, 10, 10);
 $defaultTransition: all 0.3s ease;
 
 //shadows
-$floatingBoxShadow: 0 0 50px -15px rgba(#444, 1);
+$floatingBoxShadow: 0 0 25px -5px rgba($themeColor, 1);
 
 $tablet-width: 576px;
 $tabletLandscape-width: 768px;

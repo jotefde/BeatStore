@@ -33,7 +33,7 @@ namespace BeatStore.API.UseCases.Orders
 
             var recipient = $"{orderDetails.CustomerFirstName} {orderDetails.CustomerLastName}";
             var accessKey = MD5Hasher.Make(orderDetails.PaymentId);
-            var mailSendResult = await _mailClient.SendOrderCompletedNotification(orderDetails.CustomerEmail, recipient, orderDetails.Id, accessKey);
+            var mailSendResult = await _mailClient.SendOrderCompletedNotification(orderDetails.CustomerEmail, recipient, orderDetails.PaymentId, accessKey);
             if(mailSendResult)
             {
                 OutputPort = await _orderRepository.CreateAccess(orderDetails.Id, accessKey);

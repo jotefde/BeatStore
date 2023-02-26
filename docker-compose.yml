@@ -1,0 +1,77 @@
+version: "3.9"  # optional since v1.27.0
+
+networks:
+  devnet:
+    driver: bridge
+
+services:
+  reverseproxy:
+    container_name: nginx_proxy
+    build:
+      context: ./Nginx
+      dockerfile: Dockerfile
+    ports:
+      #- "443:443"
+      - "3000:3000"
+      - "3001:3001"
+      - "3002:3002"
+    restart: always
+    networks:
+      - devnet
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/certs
+    depends_on:
+      - api
+      - minio
+
+  sql:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    networks:
+      - devnet
+    container_name: sql_server2022
+    ports: # not actually needed, because the two services are on the same network
+      - "1433:1433" 
+    environment:
+      - ACCEPT_EULA=y
+      - SA_PASSWORD=VeryComplex123Password
+
+  minio:
+    container_name: minio
+    image: minio/minio
+    restart: "unless-stopped"
+    networks:
+      - devnet
+    volumes:
+        - ./MinIO/data:/data
+    environment:
+        MINIO_ROOT_USER: tkNMzm3UQCznUmV9
+        MINIO_ROOT_PASSWORD: y3NVjvD3zQGWnFnBAp6roI4HvL8LO9VR
+        MINIO_SERVER_URL: http://localhost:9000
+    # Allow all incoming hosts to access the server by using 0.0.0.0
+    command: server --console-address ":9090" /data
+    expose:
+        - "9000:9000"
+        - "9090:9090"
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/live"]
+        interval: 30s
+        timeout: 20s
+        retries: 3
+
+  api:
+    image: beatstore_api
+    networks:
+      - devnet
+    container_name: beatstore_api_application
+    build:
+      context: .
+      dockerfile: BeatStore.API/Dockerfile
+    environment:
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=VeryComplex123Password
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/root/.aspnet/https/BeatStore.API.pfx
+    expose:
+      - "5000:5000"
+    restart: always
+    depends_on:
+      - sql
+      - minio

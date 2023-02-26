@@ -8,6 +8,7 @@ using BeatStore.API.Helpers.Enums;
 using BeatStore.API.Modules;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -52,6 +53,11 @@ namespace BeatStore.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
             app.UseCors("AllowAll");
             app.UseRouting();
             app.UseAuthentication();
@@ -87,6 +93,17 @@ namespace BeatStore.API
             app.UseSwagger();
             var httpContextAccessor = app.ApplicationServices.GetRequiredService<IHttpContextAccessor>();
             UrlHelperExtension.Configure(httpContextAccessor);
+
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+
+                var context = services.GetRequiredService<ApplicationDBContext>();
+                if (context.Database.GetPendingMigrations().Any())
+                {
+                    context.Database.Migrate();
+                }
+            }
         }
 
 
@@ -193,6 +210,11 @@ namespace BeatStore.API
             identityBuilder = new IdentityBuilder(identityBuilder.UserType, typeof(IdentityRole), identityBuilder.Services);
             identityBuilder.AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders();
             //services.AddDefaultIdentity<AppUser>().AddUserStore<ApplicationDBContext>();
+
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.KnownProxies.Add(IPAddress.Parse("127.0.0.1"));
+            });
 
             services.AddSwaggerGen(c =>
             {

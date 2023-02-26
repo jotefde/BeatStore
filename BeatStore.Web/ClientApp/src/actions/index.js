@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {useMutation, useQuery} from "@tanstack/react-query";
+import { API_URL } from "Constants";
 
 export const ACTION_TYPE = {
     GET_STOCK_REQUEST: 'GET_STOCK_REQUEST',
@@ -8,7 +9,6 @@ export const ACTION_TYPE = {
     GET_ORDER_REQUEST: 'GET_ORDER_REQUEST',
 };
 
-export const API_URL = 'https://2032-188-146-139-1.eu.ngrok.io';
 const getRequest = (route) => axios
     .get(`${API_URL}/${route}`)
     .then(({data}) => data)

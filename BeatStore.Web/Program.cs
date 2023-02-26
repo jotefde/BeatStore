@@ -1,14 +1,21 @@
 
+using System.IO;
+
 namespace BeatStore.Web
 {
     public class Program
     {
         public static void Main(string[] args)
         {
+            WebApplicationOptions opts;
+            opts = new()
+            {
+                Args = args,
+                WebRootPath = "/app/bin/Debug/net6.0/wwwroot",
+                ContentRootPath = "/app/bin/Debug/net6.0",
+            };
             var builder = WebApplication.CreateBuilder(args);
-
             // Add services to the container.
-
             builder.Services.AddControllersWithViews();
             var app = builder.Build();
 
@@ -29,7 +36,6 @@ namespace BeatStore.Web
                 pattern: "{controller}/{action=Index}/{id?}");
 
             app.MapFallbackToFile("index.html");
-
             app.Run();
         }
     }

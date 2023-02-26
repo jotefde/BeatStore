@@ -23,7 +23,8 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "publishAllPorts": true,
-      "useSSL": true
+      "useSSL": true,
+      "sslPort": 5000
     }
   },
   "$schema": "https://json.schemastore.org/launchsettings.json",
@@ -31,8 +32,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:49462",
-      "sslPort": 44374
+      "applicationUrl": "http://localhost:49169/",
+      "sslPort": 44310
     }
   }
 }

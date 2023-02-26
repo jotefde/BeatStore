@@ -8,6 +8,7 @@ import {useNavigate} from 'react-router-dom';
 import { useListStock } from 'actions';
 import useDataLoading from "hooks/useDataLoading";
 import ClipLoader from "react-spinners/ClipLoader";
+import {MINIO_URL} from "Constants";
 
 const TrackGrid = ({ className, ...props }) => {
     const shoppingCart = useShoppingCart();
@@ -32,7 +33,7 @@ const TrackGrid = ({ className, ...props }) => {
     const mappedTracks = [];
     for (const { Id, Name, Slug, Price, Description } of tracks) {
         const track = <Col className={'trackCard'} xs={12} md={6} lg={4} xl={3} key={Id}>
-            <DescribedPicturePane className={'trackCard__content'} picture={`http://localhost:9000/covers/${Slug}.jpg`} link={`/product/${Slug}`} title={Name} price={Price}/>
+            <DescribedPicturePane className={'trackCard__content'} picture={`{MINIO_URL}/covers/${Slug}.jpg`} link={`/product/${Slug}`} title={Name} price={Price}/>
             <Container className={'buttonWrap'}>
                 <Row>
                     <Col as={Button} variant='outline-primary' xs={6}

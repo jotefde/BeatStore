@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {useParams} from 'react-router-dom';
-import {connect} from 'react-redux';
 import {Container, Row, Col} from 'react-bootstrap';
-import { useGetCustomerOrder, API_URL } from 'actions';
+import { useGetCustomerOrder } from 'actions';
 import cx from 'classnames';
 import useDataLoading from 'hooks/useDataLoading';
-import {CoverImage} from "../components/atoms";
+import {CoverImage} from "components/atoms";
+import { API_URL} from "Constants";
 
 const CustomerOrderPage = ({...props}) => {
     const { accessKey } = useParams();
